@@ -20,33 +20,23 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["student", "recruiter"], // enum is used where we have select some value.
-      required: true,
+      enum: ["buyer", "seller"], // enum is used where we have select some value.
     },
-    profile: {
-      bio: {
-        type: String,
-      },
-      skills: [
-        {
-          type: String,
-        },
-      ],
-      resume: {
-        type: String, // URL of the resume
-      },
-      resumeOriginalName: {
-        type: String,
-      },
-      company: {
-        type: mongoose.Schema.Types.ObjectId, // Refers to the Company id
-        ref: "Company",
-      },
-      profilePhoto: {
-        type: String,
-        default:
-          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
-      },
+    profilePhoto: {
+      type: String,
+      default:
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+    },
+    address: {
+      type: String,
+    },
+    reviews: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Reviews",
+    },
+    orders: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
     },
   },
   { timestamps: true }

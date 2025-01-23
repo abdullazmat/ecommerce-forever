@@ -319,14 +319,14 @@ export const forgetPassword = async (req, res) => {
     const mailOptions = {
       from: process.env.EMAIL,
       to: email,
-      subject: "Password Reset For Job Portal",
+      subject: "Password Reset For ForEver Commerce",
       html: `
         <html>
           <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
             <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto;">
               <h2 style="color: #333333;">Password Reset Request</h2>
               <p style="font-size: 16px; color: #555555;">
-                We received a request to reset your password for your Job Portal account.
+                We received a request to reset your password for your Ecommerce Portal account.
                 Please click the link below to reset your password.
               </p>
               <p style="font-size: 16px; color: #555555;">

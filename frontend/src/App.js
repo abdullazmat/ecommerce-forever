@@ -7,6 +7,7 @@ import Footer from "./Components/user/Footer.js";
 import NotFound from "./Components/shared/notFound.js";
 import ForgetPassword from "./Components/shared/ForgetPassword.js";
 import UpdatePassword from "./Components/shared/UpdatePassword.js";
+import PrivateRoute from "./Components/user/PrivateRoute.js";
 
 function App() {
   return (

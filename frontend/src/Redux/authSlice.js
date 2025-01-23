@@ -5,7 +5,6 @@ const userSlice = createSlice({
   initialState: {
     loading: false,
     user: null,
-    appliedJobs: [],
   },
   reducers: {
     setLoading: (state, action) => {
@@ -14,11 +13,8 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    setAppliedJobs: (state, action) => {
-      state.appliedJobs = action.payload;
-    },
   },
 });
 
-export const { setLoading, setUser, setAppliedJobs } = userSlice.actions;
+export const { setLoading, setUser } = userSlice.actions;
 export default userSlice.reducer;
