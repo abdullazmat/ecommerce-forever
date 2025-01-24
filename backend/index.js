@@ -42,11 +42,11 @@ app.use(
 
 // API Routes
 app.use("/api/v1/user", userRoutes);
-app.use("/api/v1/products", productRoutes);
-app.use("/api/v1/orders", orderRoutes);
-app.use("/api/v1/cart", cartRoutes);
-app.use("/api/v1/payment", paymentRoutes);
-app.use("/api/v1/reviews", reviewRoutes);
+// app.use("/api/v1/products", productRoutes);
+// app.use("/api/v1/orders", orderRoutes);
+// app.use("/api/v1/cart", cartRoutes);
+// app.use("/api/v1/payment", paymentRoutes);
+// app.use("/api/v1/reviews", reviewRoutes);
 
 //  Serve static assets if in production
 // const __dirname = path.resolve();

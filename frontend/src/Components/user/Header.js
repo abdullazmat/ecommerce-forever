@@ -1,226 +1,142 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
-import { USER_API_END_POINT } from "../../Utils/constant";
-import { useNavigate } from "react-router-dom";
-import { setUser } from "../../Redux/authSlice";
-import { useState } from "react";
-import { assets } from "../../../src/assets/admin_assets/assets";
+import {
+  faMagnifyingGlass,
+  faUser,
+  faCartShopping,
+  faBars,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
+import { Link, useLocation } from "react-router-dom";
+import { assets } from "../../../src/assets/frontend_assets/assets";
 
 function Header() {
-  const { user } = useSelector((state) => state.auth);
-  const [success, setSuccess] = useState(false);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
-  const logoutHandler = async () => {
-    try {
-      const res = await axios.get(`${USER_API_END_POINT}/logout`, {
-        withCredentials: true,
-      });
-      if (res.data.success) {
-        setSuccess(true);
-        setTimeout(() => {
-          setSuccess(false);
-        }, 3000);
-        dispatch(setUser(null));
-        navigate("/");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // Function to check active route
+  const isActive = (path) => location.pathname === path;
 
   return (
-    <div>
-      <header className="p-3 mb-3 ">
-        <div className="container">
-          <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    <div className="container-fluid">
+      {/* Header Section */}
+      <header className="d-flex align-items-center justify-content-between py-3 px-4 bg-light">
+        {/* Logo */}
+        <Link to="/" className="text-decoration-none">
+          <img src={assets.logo} alt="logo" style={{ width: "100px" }} />
+        </Link>
+
+        {/* Desktop Navigation Links */}
+        <ul className="nav d-none d-md-flex mb-0">
+          <li className="nav-item">
             <Link
               to="/"
-              className="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none"
+              className={`nav-link px-3 ${
+                isActive("/") ? "fw-bold text-decoration-underline" : ""
+              }`}
             >
-              <img src={assets.logo} className="w-50 w-sm-25" />
+              Home
             </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              to="/collection"
+              className={`nav-link px-3 ${
+                isActive("/collection")
+                  ? "fw-bold text-decoration-underline"
+                  : ""
+              }`}
+            >
+              Collection
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              to="/about"
+              className={`nav-link px-3 ${
+                isActive("/about") ? "fw-bold text-decoration-underline" : ""
+              }`}
+            >
+              About
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link
+              to="/contact"
+              className={`nav-link px-3 ${
+                isActive("/contact") ? "fw-bold text-decoration-underline" : ""
+              }`}
+            >
+              Contact
+            </Link>
+          </li>
+        </ul>
 
-            {user && user.role === "recruiter" ? (
-              <ul className="nav col-12 col-lg-auto ms-lg-auto me-0 me-lg-5 mb-2 justify-content-center mb-md-0">
-                <li>
-                  <Link
-                    to="/admin/companies"
-                    className="nav-link px-2  text-black nav-links"
-                    style={{ fontWeight: "bold" }}
-                  >
-                    Companies
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/admin/jobs"
-                    className="nav-link px-2 text-black  nav-links"
-                    style={{ fontWeight: "bold" }}
-                  >
-                    Jobs
-                  </Link>
-                </li>
-              </ul>
-            ) : (
-              <ul className="nav col-12 col-lg-auto ms-lg-auto me-0 me-lg-5 mb-2 justify-content-center mb-md-0">
-                <li>
-                  <Link
-                    to="/"
-                    className="nav-link px-2  text-black nav-links"
-                    style={{ fontWeight: "bold" }}
-                  >
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/jobs"
-                    className="nav-link px-2 text-black  nav-links"
-                    style={{ fontWeight: "bold" }}
-                  >
-                    Jobs
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/browse"
-                    className="nav-link px-2 text-black nav-links"
-                    style={{ fontWeight: "bold" }}
-                  >
-                    Browse
-                  </Link>
-                </li>
-              </ul>
-            )}
-
-            <div className="dropdown text-end me-0 me-lg-3">
-              {user ? (
-                <Link
-                  to="#"
-                  className="d-block link-body-emphasis text-decoration-none dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <img
-                    src={
-                      user?.profile?.profilePhoto
-                        ? user?.profile.profilePhoto
-                        : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                    }
-                    alt="mdo"
-                    width="32"
-                    height="32"
-                    className="rounded-circle mt-3 mt-md-0"
-                  />
-                </Link>
-              ) : (
-                <div className="mt-3 mt-lg-0">
-                  <Link to={"/login"}>
-                    <button
-                      className="btn me-3 nav-login-btn "
-                      style={{
-                        backgroundColor: "white",
-                        color: "black",
-                        border: "1px solid black",
-                      }}
-                    >
-                      LogIn
-                    </button>
-                  </Link>
-                  <Link to={"/signup"}>
-                    <button
-                      className="btn nav-signup-btn "
-                      style={{ backgroundColor: "#5F32AD", color: "white" }}
-                    >
-                      Signup
-                    </button>
-                  </Link>
-                </div>
-              )}
-              <ul className="dropdown-menu text-small">
-                <li>
-                  <div className="d-flex ">
-                    <img
-                      src={
-                        user?.profile?.profilePhoto
-                          ? user?.profile.profilePhoto
-                          : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                      }
-                      alt="mdo"
-                      width="32"
-                      height="32"
-                      className="rounded-circle  "
-                    />
-                    <p
-                      className="dropdown-item  "
-                      style={{ fontWeight: "bold" }}
-                    >
-                      {user?.fullName
-                        ? user?.fullName.charAt(0).toUpperCase() +
-                          user?.fullName.slice(1)
-                        : "Guest"}
-                    </p>
-                  </div>
-                </li>
-
-                {user && user.role === "student" && (
-                  <li>
-                    <div className="d-flex align-items-center">
-                      <FontAwesomeIcon icon={faUser} className="ms-2" />
-
-                      <Link
-                        className="dropdown-item text-black view-profile-nav"
-                        to="/profile"
-                      >
-                        View Profile
-                      </Link>
-                    </div>
-                  </li>
-                )}
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <div className="d-flex align-items-center">
-                    <FontAwesomeIcon
-                      icon={faRightFromBracket}
-                      className="ms-2"
-                    />
-                    <Link
-                      className="dropdown-item text-black view-profile-nav"
-                      to="#"
-                      onClick={logoutHandler}
-                    >
-                      Log out
-                    </Link>
-                  </div>
-                </li>
-              </ul>
-            </div>
+        {/* Icons and Mobile Toggle Button */}
+        <div className="d-flex align-items-center">
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="me-3" />
+          <FontAwesomeIcon icon={faUser} className="me-3" />
+          <div className="position-relative me-3">
+            <FontAwesomeIcon icon={faCartShopping} className="fs-5" />
+            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              5
+            </span>
           </div>
+          {/* Mobile Menu Toggle */}
+          <button
+            className="btn btn-outline-secondary d-md-none"
+            onClick={() => setMenuOpen(true)}
+          >
+            <FontAwesomeIcon icon={faBars} />
+          </button>
         </div>
       </header>
-      {success && (
+
+      {/* Full-Screen Off-Canvas Menu */}
+      {menuOpen && (
         <div
-          className="toast-container position-fixed bottom-0 end-0 p-3"
-          style={{ bottom: "50px", right: "10px" }} // Adjust these values
+          className="position-fixed top-0 start-0 w-100 h-100 bg-white d-flex flex-column"
+          style={{ zIndex: 1050 }}
         >
-          <div
-            id="liveToast"
-            className="toast show"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-          >
-            <div className="toast-body text-success fw-bold">
-              Logged Out Successfully
-            </div>
+          {/* Close Button */}
+          <div className="d-flex justify-content-end p-3 border-bottom">
+            <button
+              className="btn btn-outline-secondary"
+              onClick={() => setMenuOpen(false)}
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+          </div>
+          {/* Navigation Links */}
+          <div className="d-flex flex-column p-4">
+            <Link
+              to="/"
+              className="mb-3 text-decoration-none text-dark fs-5 bg-black text-white"
+              onClick={() => setMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              to="/collection"
+              className="mb-3 text-decoration-none text-dark fs-5"
+              onClick={() => setMenuOpen(false)}
+            >
+              Collection
+            </Link>
+            <Link
+              to="/about"
+              className="mb-3 text-decoration-none text-dark fs-5"
+              onClick={() => setMenuOpen(false)}
+            >
+              About
+            </Link>
+            <Link
+              to="/contact"
+              className="mb-3 text-decoration-none text-dark fs-5"
+              onClick={() => setMenuOpen(false)}
+            >
+              Contact
+            </Link>
           </div>
         </div>
       )}
