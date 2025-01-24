@@ -8,6 +8,7 @@ import { USER_API_END_POINT } from "../../Utils/constant";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../../Redux/authSlice";
 import { useState } from "react";
+import { assets } from "../../../src/assets/admin_assets/assets";
 
 function Header() {
   const { user } = useSelector((state) => state.auth);
@@ -42,12 +43,7 @@ function Header() {
               to="/"
               className="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none"
             >
-              <h3 style={{ fontWeight: "bold" }}>
-                Job{" "}
-                <span style={{ color: "#f83002", fontWeight: "bold" }}>
-                  Hunt
-                </span>
-              </h3>
+              <img src={assets.logo} className="w-50 w-sm-25" />
             </Link>
 
             {user && user.role === "recruiter" ? (
