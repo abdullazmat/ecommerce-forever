@@ -31,13 +31,9 @@ function HeroSection() {
           </h1>
           <div className="mt-4">
             <button
-              className="btn btn-dark"
-              style={{
-                backgroundColor: "#000",
-                color: "#fff",
-                padding: "10px 20px",
-                borderRadius: "0",
-              }}
+              type="submit"
+              className="btn btn-dark text-white"
+              style={{ borderRadius: "0" }}
             >
               Shop Now
             </button>

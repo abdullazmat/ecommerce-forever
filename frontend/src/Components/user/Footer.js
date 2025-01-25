@@ -12,8 +12,8 @@ function Footer() {
     <>
       <div classNameName="border-top w-100"></div>
       <div classNameName="container">
-        <footer className="row row-cols-1 row-cols-sm-2 row-cols-md-5 d-flex justify-content-around p-3 my-5 ">
-          <div className="col mb-3">
+        <footer className="row row-cols-1  row-cols-md-5 d-flex justify-content-around px-3  mt-5  ">
+          <div className="">
             <a
               href="/"
               className="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none"
@@ -86,6 +86,13 @@ function Footer() {
                 </a>
               </li>
             </ul>
+          </div>
+
+          <div
+            className="border-top w-100 d-flex justify-content-center align-items-center p-3  "
+            style={{ fontFamily: "Outfit" }}
+          >
+            Copyright 2024@ Abdullah - All Right Reserved.
           </div>
         </footer>
       </div>
