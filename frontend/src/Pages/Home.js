@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import HeroSection from "../Components/user/HeroSection";
 
 function Home() {
   const { user } = useSelector((state) => state.auth);
@@ -14,7 +15,7 @@ function Home() {
 
   return (
     <div>
-      <h1>Welcome to the Home Page</h1>
+      <HeroSection />
     </div>
   );
 }

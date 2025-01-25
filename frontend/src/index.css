@@ -6,3 +6,15 @@ html {
   padding: 0;
   height: 100%;
 }
+
+/* Nav Bar Styling */
+
+.underline-active {
+  text-decoration: underline;
+  text-underline-offset: 8px; /* Adjust as needed */
+}
+
+.toggline-active {
+  background-color: black;
+  color: white !important;
+}

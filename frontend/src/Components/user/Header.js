@@ -20,7 +20,7 @@ function Header() {
   return (
     <div className="container-fluid">
       {/* Header Section */}
-      <header className="d-flex align-items-center justify-content-between py-3 px-4 bg-light">
+      <header className="d-flex align-items-center justify-content-between py-3 px-4 ">
         {/* Logo */}
         <Link to="/" className="text-decoration-none">
           <img src={assets.logo} alt="logo" style={{ width: "100px" }} />
@@ -32,8 +32,9 @@ function Header() {
             <Link
               to="/"
               className={`nav-link px-3 ${
-                isActive("/") ? "fw-bold text-decoration-underline" : ""
+                isActive("/") ? " underline-active" : ""
               }`}
+              style={{ color: "black" }}
             >
               Home
             </Link>
@@ -42,10 +43,9 @@ function Header() {
             <Link
               to="/collection"
               className={`nav-link px-3 ${
-                isActive("/collection")
-                  ? "fw-bold text-decoration-underline"
-                  : ""
+                isActive("/collection") ? "underline-active" : ""
               }`}
+              style={{ color: "black" }}
             >
               Collection
             </Link>
@@ -54,8 +54,9 @@ function Header() {
             <Link
               to="/about"
               className={`nav-link px-3 ${
-                isActive("/about") ? "fw-bold text-decoration-underline" : ""
+                isActive("/about") ? " underline-active" : ""
               }`}
+              style={{ color: "black" }}
             >
               About
             </Link>
@@ -64,8 +65,9 @@ function Header() {
             <Link
               to="/contact"
               className={`nav-link px-3 ${
-                isActive("/contact") ? "fw-bold text-decoration-underline" : ""
+                isActive("/contact") ? " underline-active" : ""
               }`}
+              style={{ color: "black" }}
             >
               Contact
             </Link>
@@ -73,21 +75,18 @@ function Header() {
         </ul>
 
         {/* Icons and Mobile Toggle Button */}
-        <div className="d-flex align-items-center">
-          <FontAwesomeIcon icon={faMagnifyingGlass} className="me-3" />
-          <FontAwesomeIcon icon={faUser} className="me-3" />
-          <div className="position-relative me-3">
-            <FontAwesomeIcon icon={faCartShopping} className="fs-5" />
+        <div className="d-flex align-items-center ">
+          <FontAwesomeIcon icon={faMagnifyingGlass} className="me-4 fa-lg" />
+          <FontAwesomeIcon icon={faUser} className="me-4 fa-lg" />
+          <div className="position-relative me-3  me-sm-5">
+            <FontAwesomeIcon icon={faCartShopping} className="fs-5 fa-lg" />
             <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
               5
             </span>
           </div>
           {/* Mobile Menu Toggle */}
-          <button
-            className="btn btn-outline-secondary d-md-none"
-            onClick={() => setMenuOpen(true)}
-          >
-            <FontAwesomeIcon icon={faBars} />
+          <button className="btn  d-md-none" onClick={() => setMenuOpen(true)}>
+            <FontAwesomeIcon icon={faBars} className="fa-lg" />
           </button>
         </div>
       </header>
@@ -108,31 +107,40 @@ function Header() {
             </button>
           </div>
           {/* Navigation Links */}
-          <div className="d-flex flex-column p-4">
+          <div className="d-flex flex-column ">
             <Link
               to="/"
-              className="mb-3 text-decoration-none text-dark fs-5 bg-black text-white"
+              className={`mb-3 text-decoration-none text-dark p-2 fs-5 ${
+                isActive("/") ? "toggline-active" : ""
+              } `}
               onClick={() => setMenuOpen(false)}
             >
               Home
             </Link>
             <Link
               to="/collection"
-              className="mb-3 text-decoration-none text-dark fs-5"
+              className={`mb-3 text-decoration-none text-dark p-2 fs-5 ${
+                isActive("/collection") ? "toggline-active" : ""
+              }`}
               onClick={() => setMenuOpen(false)}
             >
               Collection
             </Link>
+
             <Link
               to="/about"
-              className="mb-3 text-decoration-none text-dark fs-5"
+              className={`mb-3 text-decoration-none text-dark p-2 fs-5 ${
+                isActive("/about") ? "toggline-active" : ""
+              }   `}
               onClick={() => setMenuOpen(false)}
             >
-              About
+              About Us
             </Link>
             <Link
               to="/contact"
-              className="mb-3 text-decoration-none text-dark fs-5"
+              className={`mb-3 text-decoration-none text-dark p-2 fs-5  ${
+                isActive("/contact") ? "toggline-active" : ""
+              }`}
               onClick={() => setMenuOpen(false)}
             >
               Contact
