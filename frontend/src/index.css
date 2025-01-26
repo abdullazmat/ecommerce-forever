@@ -31,3 +31,7 @@ html {
   box-shadow: none;
   border-color: #000;
 }
+
+.search-box {
+  background-color: rgb(249 250 251) !important;
+}
