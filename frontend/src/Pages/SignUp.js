@@ -97,137 +97,88 @@ function SignUp() {
   }
 
   return (
-    <div className="container p-5 mt-2 mt-md-0">
+    <div className="container p-5 mt-5 mt-md-0">
+      <h2
+        className=" container mt-5 mb-4 p-3 fw-bold d-flex justify-content-center"
+        style={{ color: "#1f2937", fontFamily: "Prata, serif" }}
+      >
+        Sign Up
+      </h2>
       <form
-        className="container p-3 d-flex flex-column justify-content-center border col-12 col-sm-9 col-md-6 col-lg-4"
+        className="container p-3 d-flex flex-column justify-content-center  col-12 col-sm-9 col-md-6"
         onSubmit={handleSubmit}
       >
-        <h4 className="mb-4 fw-bold">Sign Up</h4>
-        {/* Full Name Field */}
+        {/* Form Fields */}
         <div className="mb-3">
-          <label htmlFor="fullName" className="form-label fw-medium">
-            Full Name
-          </label>
           <input
             type="text"
-            className="form-control"
-            id="fullName"
-            name="fullName"
+            className="form-control "
+            id="name"
+            name="name"
+            aria-describedby="emailHelp"
             required
-            placeholder="abdullah"
+            placeholder="Name"
             onChange={handleChange}
+            style={{ border: "1px solid black" }}
           />
         </div>
-        {/* Email Field */}
         <div className="mb-3">
-          <label htmlFor="email" className="form-label fw-medium">
-            Email
-          </label>
           <input
             type="email"
-            className="form-control"
+            className="form-control "
             id="email"
             name="email"
+            aria-describedby="emailHelp"
             required
-            placeholder="abc@gmail.com"
+            placeholder="Email"
             onChange={handleChange}
+            style={{ border: "1px solid black" }}
           />
         </div>
-        {/* Phone Number Field */}
         <div className="mb-3">
-          <label htmlFor="phoneNumber" className="form-label fw-medium">
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            className="form-control"
-            placeholder="+923175183327"
-            id="phoneNumber"
-            name="phoneNumber"
-            pattern="\+92[0-9]{10}"
-            required
-            onChange={handleChange}
-          />
-        </div>
-        {/* Password Field */}
-        <div className="mb-3">
-          <label
-            htmlFor="exampleInputPassword1"
-            className="form-label fw-medium"
-          >
-            Password
-          </label>
           <input
             type="password"
-            className="form-control"
+            className="form-control input-custom "
             id="password"
-            placeholder="password"
             name="password"
-            onChange={handleChange}
             required
+            placeholder="Password"
+            onChange={handleChange}
+            style={{ border: "1px solid black" }}
           />
         </div>
-        {/* Radio Buttons for Role Selection */}
-        <div className="d-flex flex-column flex-sm-row mb-3">
-          <div className="form-check mb-4 mt-2">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="role"
-              id="student"
-              value="student"
-              required
-              onChange={handleChange}
-              checked={formData.role === "student"}
-            />
-            <label className="form-check-label fw-medium" htmlFor="student">
-              Student
-            </label>
-          </div>
-          <div className="form-check mb-4 mt-2 ms-sm-3">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="role"
-              value="recruiter"
-              id="recruiter"
-              onChange={handleChange}
-              required
-              checked={formData.role === "recruiter"}
-            />
-            <label className="form-check-label fw-medium" htmlFor="recruiter">
-              Recruiter
-            </label>
-          </div>
-        </div>
-        {/* Profile Image Upload Section */}
-        <div className="mb-3 mt-1 d-flex align-items-center justify-content-between">
-          <label htmlFor="formFile" className="form-label fw-bold">
-            Profile
-          </label>
-          <input
-            className="form-control w-75 w-sm-100 ms-3"
-            type="file"
-            id="formFile"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </div>
-        {/* Submit Button */}
-        <button type="submit" className="btn btn-dark mt-2">
-          {loading ? "Loading..." : "Sign Up"}
-        </button>
-        {/* Link for Existing Account */}
-        <div className="mt-3 d-flex justify-content-center">
-          <p>Already have an account?</p>
-          <Link to="/login" className="ms-2">
+
+        <div className="mt-3 d-flex flex-column flex-sm-row justify-content-between align-items-center">
+          <Link
+            to="/forget-password"
+            className="text-danger mb-2 mb-sm-0"
+            style={{ textDecoration: "none" }}
+          >
+            Forgot Password?
+          </Link>
+          <Link
+            to="/signup"
+            className="text-black"
+            style={{ textDecoration: "none" }}
+          >
             Log In
           </Link>
         </div>
+
+        <div className="d-flex justify-content-center">
+          <button
+            type="submit"
+            className="btn btn-dark w-75 w-sm-50 w-md-25 mt-4"
+            style={{ borderRadius: "0" }}
+          >
+            {loading ? "Loading ..." : "Sign Up"}
+          </button>
+        </div>
+        {/* Error and Success Messages */}
         {error && (
           <div
             className="toast-container position-fixed"
-            style={{ bottom: "50px", right: "10px" }} // Adjust these values
+            style={{ bottom: "50px", right: "10px" }}
           >
             <div
               id="liveToast"
@@ -239,11 +190,11 @@ function SignUp() {
               <div className="toast-body text-danger">{error}</div>
             </div>
           </div>
-        )}{" "}
-        {success && (
+        )}
+        {success && user && (
           <div
             className="toast-container position-fixed bottom-0 end-0 p-3"
-            style={{ bottom: "50px", right: "10px" }} // Adjust these values
+            style={{ bottom: "50px", right: "10px" }}
           >
             <div
               id="liveToast"
@@ -252,12 +203,12 @@ function SignUp() {
               aria-live="assertive"
               aria-atomic="true"
             >
-              <div className="toast-body text-success">
-                Signed Up Successfully
+              <div className="toast-body text-success fw-bold">
+                Logged In Successfully
               </div>
             </div>
           </div>
-        )}{" "}
+        )}
       </form>
     </div>
   );

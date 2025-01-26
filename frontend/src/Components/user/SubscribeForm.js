@@ -3,7 +3,7 @@ import React from "react";
 function SubscribeForm() {
   return (
     <div>
-      <div className="container mt-5">
+      <div className="container mt-5 mb-5">
         <div className="d-flex align-items-center justify-content-center flex-column">
           <div>
             <h2 style={{ color: "#212529", fontFamily: "Outfit" }}>

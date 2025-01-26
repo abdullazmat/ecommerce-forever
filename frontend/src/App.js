@@ -7,6 +7,7 @@ import Footer from "./Components/user/Footer.js";
 import NotFound from "./Components/shared/notFound.js";
 import ForgetPassword from "./Components/shared/ForgetPassword.js";
 import UpdatePassword from "./Components/shared/UpdatePassword.js";
+import Collections from "./Pages/Collections.js";
 import PrivateRoute from "./Components/user/PrivateRoute.js";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
               path="/reset-password/:token"
               element={<UpdatePassword />}
             ></Route>
+            <Route path="/collections" element={<Collections />}></Route>
 
             <Route element={<PrivateRoute />}></Route>
             <Route path="*" element={<NotFound />} />

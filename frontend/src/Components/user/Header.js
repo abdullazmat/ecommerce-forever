@@ -9,14 +9,33 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import { assets } from "../../../src/assets/frontend_assets/assets";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Collections from "../../Pages/Collections";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [searchBox, setSearchBox] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Function to check active route
   const isActive = (path) => location.pathname === path;
+
+  const onCollection = (path) => location;
+
+  const [searchBox, setSearchBox] = useState(false);
+
+  const handleClick = () => {
+    setSearchBox(!searchBox);
+  };
+
+  useEffect(() => {
+    if (location.pathname !== "/collections") {
+      setSearchBox(false);
+    } else {
+      setSearchBox(true);
+    }
+  }, [location.pathname]);
 
   return (
     <>
@@ -43,7 +62,7 @@ function Header() {
             </li>
             <li className="nav-item">
               <Link
-                to="/collection"
+                to={`/collections`}
                 className={`nav-link px-3 ${
                   isActive("/collection") ? "underline-active" : ""
                 }`}
@@ -79,14 +98,27 @@ function Header() {
           {/* Icons and Mobile Toggle Button */}
           <div className="d-flex align-items-center ">
             <FontAwesomeIcon
-              onClick={() => setSearchBox(!searchBox)}
+              onClick={() => {
+                navigate("/collections");
+                onCollection("/collections");
+                handleClick();
+              }}
               icon={faMagnifyingGlass}
               className="me-4 fa-lg"
               style={{ cursor: "pointer" }}
             />
-            <FontAwesomeIcon icon={faUser} className="me-4 fa-lg" />
+            <FontAwesomeIcon
+              icon={faUser}
+              onClick={() => navigate("/login")}
+              className="me-4 fa-lg"
+              style={{ cursor: "pointer" }}
+            />
             <div className="position-relative me-3  me-sm-5">
-              <FontAwesomeIcon icon={faCartShopping} className="fs-5 fa-lg" />
+              <FontAwesomeIcon
+                icon={faCartShopping}
+                className="fs-5 fa-lg"
+                style={{ cursor: "pointer" }}
+              />
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 5
               </span>
@@ -128,11 +160,15 @@ function Header() {
                 Home
               </Link>
               <Link
-                to="/collection"
                 className={`mb-3 text-decoration-none text-dark p-2 fs-5 ${
                   isActive("/collection") ? "toggline-active" : ""
                 }`}
-                onClick={() => setMenuOpen(false)}
+                onClick={() => {
+                  setMenuOpen(false);
+                  navigate("/collections");
+                  onCollection("/collections");
+                  handleClick();
+                }}
               >
                 Collection
               </Link>
@@ -159,29 +195,30 @@ function Header() {
           </div>
         )}
       </div>
-
-      {searchBox && (
-        <div className=" w-100  bg-white d-flex align-items-center justify-content-center container  search-box ">
-          <div className="w-50 d-flex">
-            <input
-              type="text"
-              placeholder="Search"
-              className="form-control input-custom "
-            />
-            <button className="btn bg-black " style={{ borderRadius: "0" }}>
-              <FontAwesomeIcon
-                icon={faMagnifyingGlass}
-                style={{ color: "white" }}
+      <div className="container">
+        {searchBox && (
+          <div className=" w-100  bg-white d-flex align-items-center justify-content-center container  search-box ">
+            <div className="w-75 w-md-50 d-flex">
+              <input
+                type="text"
+                placeholder="Search"
+                className="form-control input-custom "
               />
-            </button>
+              <button className="btn bg-black " style={{ borderRadius: "0" }}>
+                <FontAwesomeIcon
+                  icon={faMagnifyingGlass}
+                  style={{ color: "white" }}
+                />
+              </button>
+            </div>
+            <div className=" p-3 border-bottom">
+              <button className="btn" onClick={() => setSearchBox(false)}>
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
           </div>
-          <div className=" p-3 border-bottom">
-            <button className="btn" onClick={() => setSearchBox(!searchBox)}>
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 }

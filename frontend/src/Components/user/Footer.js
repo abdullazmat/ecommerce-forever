@@ -10,7 +10,7 @@ import { assets } from "../../../src/assets/frontend_assets/assets";
 function Footer() {
   return (
     <>
-      <div className="border-top w-100"></div>
+      <div className="mt-0 mt-md-5 w-100"></div>
       <div className="container">
         <footer className="row row-cols-1  row-cols-md-5 d-flex justify-content-around px-3  mt-5  ">
           <div className="">

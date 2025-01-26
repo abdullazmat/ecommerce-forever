@@ -86,17 +86,19 @@ function LogIn() {
 
   // UI
   return (
-    <div className="container p-5 mt-4 mt-md-0">
+    <div className="container p-5 mt-5 mt-md-0">
+      <h2
+        className=" container mt-5 mb-4 p-3 fw-bold d-flex justify-content-center"
+        style={{ color: "#1f2937", fontFamily: "Prata, serif" }}
+      >
+        Log In
+      </h2>
       <form
-        className="container p-3 d-flex flex-column justify-content-center border col-12 col-sm-9 col-md-6"
+        className="container p-3 d-flex flex-column justify-content-center  col-12 col-sm-9 col-md-6"
         onSubmit={handleSubmit}
       >
         {/* Form Fields */}
         <div className="mb-3">
-          <h4 className="mb-4 fw-bold">Log In</h4>
-          <label htmlFor="email" className="form-label fw-medium">
-            Email
-          </label>
           <input
             type="email"
             className="form-control "
@@ -104,71 +106,49 @@ function LogIn() {
             name="email"
             aria-describedby="emailHelp"
             required
-            placeholder="abc@gmail.com"
+            placeholder="Email"
             onChange={handleChange}
+            style={{ border: "1px solid black" }}
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="password" className="form-label fw-medium">
-            Password
-          </label>
           <input
             type="password"
-            className="form-control "
+            className="form-control input-custom "
             id="password"
             name="password"
             required
-            placeholder="password"
+            placeholder="Password"
             onChange={handleChange}
+            style={{ border: "1px solid black" }}
           />
         </div>
 
-        {/* Role Selection */}
-        <div className="d-flex ">
-          <div className="form-check mb-4 mt-2">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="role"
-              id="student"
-              value="student"
-              onChange={handleChange}
-              checked={formData.role === "student"}
-            />
-            <label className="form-check-label fw-medium" htmlFor="student">
-              Student
-            </label>
-          </div>
-          <div className="form-check mb-4 mt-2 ms-4">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="role"
-              id="recruiter"
-              onChange={handleChange}
-              value="recruiter"
-              checked={formData.role === "recruiter"}
-            />
-            <label className="form-check-label fw-medium" htmlFor="recruiter">
-              Recruiter
-            </label>
-          </div>
+        <div className="mt-3 d-flex flex-column flex-sm-row justify-content-between align-items-center">
+          <Link
+            to="/forget-password"
+            className="text-danger mb-2 mb-sm-0"
+            style={{ textDecoration: "none" }}
+          >
+            Forgot Password?
+          </Link>
+          <Link
+            to="/signup"
+            className="text-black"
+            style={{ textDecoration: "none" }}
+          >
+            Create Account
+          </Link>
         </div>
 
-        <button type="submit" className="btn btn-dark">
-          {loading ? "Loading ..." : "Log In"}
-        </button>
-        <div className="mt-3 d-flex">
-          <p>Dont have an account?</p>
-          <Link to="/signup" className="ms-2">
-            SignUp
-          </Link>
-        </div>
-        <div className="mt-2 d-flex">
-          <p className="text-danger">Forgot Password?</p>
-          <Link to="/forget-password" className="ms-2">
-            Click here
-          </Link>
+        <div className="d-flex justify-content-center">
+          <button
+            type="submit"
+            className="btn btn-dark w-75 w-sm-50 w-md-25 mt-4"
+            style={{ borderRadius: "0" }}
+          >
+            {loading ? "Loading ..." : "Log In"}
+          </button>
         </div>
         {/* Error and Success Messages */}
         {error && (
