@@ -94,6 +94,7 @@ export const assets = {
   cross_icon,
   p_img1,
   p_img2_1,
+  p_img2_2,
 };
 
 export const products = [

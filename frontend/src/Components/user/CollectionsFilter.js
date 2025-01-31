@@ -64,13 +64,7 @@ function CollectionsFilter() {
       <div className="container-fluid p-0">
         <div className="row g-0 ">
           {/* Left Sidebar with Filters */}
-          <div
-            className="col-12 col-md-3 py-2 py-md-4 px-3 border-end"
-            style={{
-              borderColor: "black",
-              borderWidth: "2px",
-            }}
-          >
+          <div className="col-12 col-md-3 py-2 py-md-4 px-3 ">
             <form>
               {/* Filter Header */}
               <div className="d-flex align-items-center mb-2 py-2 mt-4 ">
@@ -174,17 +168,17 @@ function CollectionsFilter() {
                     <ul className="dropdown-menu">
                       <li>
                         <a className="dropdown-item" href="#">
-                          Action
+                          Sort By: Relevant
                         </a>
                       </li>
                       <li>
                         <a className="dropdown-item" href="#">
-                          Another action
+                          Sort By: Low To High
                         </a>
                       </li>
                       <li>
                         <a className="dropdown-item" href="#">
-                          Something else here
+                          Sort By: High to Low
                         </a>
                       </li>
                     </ul>
@@ -195,9 +189,9 @@ function CollectionsFilter() {
 
             <div>
               {collectionProducts && collectionProducts.length > 0 ? (
-                <div className="row g-3 mt-3">
+                <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 mt-3">
                   {collectionProducts.map((collection, index) => (
-                    <div key={index} className="col-lg-4 col-md-6 col-sm-12">
+                    <div key={index} className="col">
                       <LatestCollectionCards
                       // id={collection._id}
                       // title={collection.title}
@@ -216,7 +210,6 @@ function CollectionsFilter() {
           </div>
         </div>
       </div>
-      );
     </div>
   );
 }

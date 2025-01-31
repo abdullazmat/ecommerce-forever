@@ -9,6 +9,7 @@ import ForgetPassword from "./Components/shared/ForgetPassword.js";
 import UpdatePassword from "./Components/shared/UpdatePassword.js";
 import Collections from "./Pages/Collections.js";
 import PrivateRoute from "./Components/user/PrivateRoute.js";
+import About from "./Pages/About.js";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <div className="flex-grow-1">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<LogIn />}></Route>
             <Route path="/forget-password" element={<ForgetPassword />}></Route>
