@@ -10,6 +10,7 @@ import UpdatePassword from "./Components/shared/UpdatePassword.js";
 import Collections from "./Pages/Collections.js";
 import PrivateRoute from "./Components/user/PrivateRoute.js";
 import About from "./Pages/About.js";
+import Contact from "./Pages/Contact.js";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<LogIn />}></Route>
             <Route path="/forget-password" element={<ForgetPassword />}></Route>
