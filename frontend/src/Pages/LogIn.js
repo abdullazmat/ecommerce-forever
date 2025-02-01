@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../Redux/authSlice.js";
 import NotFound from "../Components/shared/notFound.js";
+import { USER_API_END_POINT } from "../Utils/constant.js";
 
 function LogIn() {
   // Use States
@@ -34,7 +35,7 @@ function LogIn() {
     e.preventDefault();
     try {
       setLoading(true);
-      const res = await fetch("/api/v1/user/login", {
+      const res = await fetch(`${USER_API_END_POINT}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

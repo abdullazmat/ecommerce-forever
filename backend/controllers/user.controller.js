@@ -10,22 +10,11 @@ dotenv.config();
 // User Registration controller
 export const register = async (req, res) => {
   try {
-    const { fullName, email, phoneNumber, password, role } = req.body; // Check if all fields are provided
-    if (!fullName || !email || !password || !role || !phoneNumber) {
+    const { fullName, email, password } = req.body; // Check if all fields are provided
+    if (!fullName || !email || !password) {
       return res
         .status(400)
         .json({ message: "All fields are required", success: false });
-    }
-
-    let profilePhotoUrl = null; // Initialize as null
-
-    if (req.file) {
-      const file = req.file;
-      const fileUri = getDataUri(file);
-      const cloudResponse = await cloudinary.uploader.upload(fileUri.content, {
-        folder: "ercommerce/profile-photos",
-      });
-      profilePhotoUrl = cloudResponse.secure_url;
     }
 
     const user = await User.findOne({ email }); // Check if email is unique
@@ -41,11 +30,6 @@ export const register = async (req, res) => {
       fullName,
       email,
       password: hashedPassword,
-      phoneNumber,
-      role,
-      profile: {
-        profilePhoto: profilePhotoUrl,
-      },
     });
 
     return res.status(201).json({
@@ -64,8 +48,9 @@ export const register = async (req, res) => {
 // Check if all fields are provided
 export const login = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
-    if (!email || !password || !role) {
+    const { email, password } = req.body;
+    console.log(req.body);
+    if (!email || !password) {
       return res.status(400).json({
         message: "All fields are required",
         success: false,
@@ -76,7 +61,7 @@ export const login = async (req, res) => {
     let user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({
-        message: "Invalid username or password",
+        message: "Username Doesnt Excist",
         success: false,
       });
     }
@@ -86,14 +71,6 @@ export const login = async (req, res) => {
     if (!isPasswordMatch) {
       return res.status(400).json({
         message: "Invalid username or password",
-        success: false,
-      });
-    }
-
-    // Check if role matches
-    if (role !== user.role) {
-      return res.status(400).json({
-        message: "Account does not exist with current role",
         success: false,
       });
     }
@@ -111,9 +88,6 @@ export const login = async (req, res) => {
       _id: user._id,
       fullName: user.fullName,
       email: user.email,
-      role: user.role,
-      phoneNumber: user.phoneNumber,
-      profile: user.profile,
     };
 
     // Send the token in the HTTP-only cookie
@@ -158,7 +132,7 @@ export const logout = async (req, res) => {
 // Update User Profile controller
 export const updateProfile = async (req, res) => {
   try {
-    const { fullName, email, phoneNumber, bio, skills } = req.body;
+    const { fullName, email, password } = req.body;
 
     // Check if user is authenticated and retrieve user from DB
     const userId = req.id; // Middleware Authenticated user id

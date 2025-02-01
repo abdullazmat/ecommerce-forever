@@ -12,10 +12,7 @@ function SignUp() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    phoneNumber: "",
     password: "",
-    role: "",
-    file: "",
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -34,32 +31,28 @@ function SignUp() {
     });
   };
 
-  const handleFileChange = (e) => {
-    setFormData({
-      ...formData,
-      file: e.target.files[0],
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const formDataObject = new FormData(); //formdata object
-    // formDataObject.append("fullname", formData.fullName);
-    // formDataObject.append("email", formData.email);
-    // formDataObject.append("phoneNumber", formData.phoneNumber);
-    // formDataObject.append("password", formData.password);
-    // formDataObject.append("role", formData.role);
-    // if (formData.file) {
-    //   formDataObject.append("file", formData.file);
-    // }
-    // console.log(formDataObject);
+    const formDataObject = new FormData(); //formdata object
+    formDataObject.append("fullName", formData.fullName);
+    formDataObject.append("email", formData.email);
+    formDataObject.append("password", formData.password);
+
+    // Log form data entries
+    for (let [key, value] of formDataObject.entries()) {
+      console.log(key, value);
+    }
 
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(`${USER_API_END_POINT}/signup`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${USER_API_END_POINT}/signup`,
+        formDataObject,
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
 
       if (!res.data.success) {
         dispatch(setLoading(false));
@@ -113,8 +106,8 @@ function SignUp() {
           <input
             type="text"
             className="form-control "
-            id="name"
-            name="name"
+            id="fullName"
+            name="fullName"
             aria-describedby="emailHelp"
             required
             placeholder="Name"
@@ -157,7 +150,7 @@ function SignUp() {
             Forgot Password?
           </Link>
           <Link
-            to="/signup"
+            to="/login"
             className="text-black"
             style={{ textDecoration: "none" }}
           >
