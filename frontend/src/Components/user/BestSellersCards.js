@@ -13,7 +13,6 @@ function BestSellersCards() {
           role="img"
         />
         <title>Placeholder</title>
-        <rect width="100%" height="100%" fill="#55595c"></rect>
 
         <div className="card-body">
           <p className="card-text">Kid Straped Trouser</p>

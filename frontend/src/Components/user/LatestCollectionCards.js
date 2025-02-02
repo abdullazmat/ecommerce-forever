@@ -13,7 +13,6 @@ function LatestCollectionCards() {
           role="img"
         />
         <title>Placeholder</title>
-        <rect width="100%" height="100%" fill="#55595c"></rect>
 
         <div className="card-body">
           <p className="card-text ms-3">Kid Straped Trouser</p>

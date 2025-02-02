@@ -35,3 +35,18 @@ html {
 .search-box {
   background-color: rgb(249 250 251) !important;
 }
+
+/* Dropdown Styling  */
+.dropdown:hover .dropdown-menu {
+  display: block;
+  left: auto;
+  right: 30px;
+  top: 30px;
+}
+
+/* Disable blue highlight on dropdown item click */
+.dropdown-item:active,
+.dropdown-item:focus {
+  background-color: transparent !important;
+  color: inherit !important;
+}

@@ -7,16 +7,26 @@ import {
   faBars,
   faTimes,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { assets } from "../../../src/assets/frontend_assets/assets";
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import Collections from "../../Pages/Collections";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "../../Redux/authSlice";
+import { USER_API_END_POINT } from "../../Utils/constant";
+import axios from "axios";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Redux States
+  const { user } = useSelector((state) => state.auth);
+
+  // Use States
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
 
   // Function to check active route
   const isActive = (path) => location.pathname === path;
@@ -36,6 +46,24 @@ function Header() {
       setSearchBox(true);
     }
   }, [location.pathname]);
+
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.get(`${USER_API_END_POINT}/logout`, {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        setSuccess(true);
+        setTimeout(() => {
+          setSuccess(false);
+        }, 3000);
+        dispatch(setUser(null));
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -107,12 +135,29 @@ function Header() {
               className="me-4 fa-lg"
               style={{ cursor: "pointer" }}
             />
-            <FontAwesomeIcon
-              icon={faUser}
-              onClick={() => navigate("/login")}
-              className="me-4 fa-lg"
-              style={{ cursor: "pointer" }}
-            />
+            <div className="dropdown position-relative">
+              <FontAwesomeIcon
+                icon={faUser}
+                onClick={user ? undefined : () => navigate("/login")}
+                className="me-4 fa-lg dropdown-toggle"
+                style={{ cursor: "pointer" }}
+              />
+              {user ? (
+                <ul className="dropdown-menu dropdown-menu-start">
+                  <li>
+                    <Link className="dropdown-item" to="/orders">
+                      Orders
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" onClick={logoutHandler}>
+                      Logout
+                    </Link>
+                  </li>
+                </ul>
+              ) : null}
+            </div>
+
             <div className="position-relative me-3  me-sm-5">
               <FontAwesomeIcon
                 icon={faCartShopping}
