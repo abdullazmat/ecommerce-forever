@@ -50,3 +50,29 @@ html {
   background-color: transparent !important;
   color: inherit !important;
 }
+
+/* Cart Item Product Name Font Size Responsiveness */
+.fs-cartitem {
+  font-size: 0.75rem !important; /* Default size for extra small screens */
+}
+
+/* Small screens (≥576px) */
+@media (min-width: 576px) {
+  .fs-cartitem {
+    font-size: 1rem !important;
+  }
+}
+
+/* Medium screens (≥768px) */
+@media (min-width: 768px) {
+  .fs-cartitem {
+    font-size: 1.25rem !important;
+  }
+}
+
+/* Large screens (≥992px) */
+@media (min-width: 992px) {
+  .fs-cartitem {
+    font-size: 1.3rem !important;
+  }
+}

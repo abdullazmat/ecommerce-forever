@@ -1,7 +1,9 @@
 import React from "react";
 import { assets } from "../../../src/assets/frontend_assets/assets";
+import { useNavigate } from "react-router-dom";
 
 function HeroSection() {
+  const navigate = useNavigate();
   return (
     <div className="container p-0 border">
       <div className="row align-items-center g-0">
@@ -34,6 +36,7 @@ function HeroSection() {
               type="submit"
               className="btn btn-dark text-white"
               style={{ borderRadius: "0" }}
+              onClick={() => navigate("/collections")}
             >
               Shop Now
             </button>

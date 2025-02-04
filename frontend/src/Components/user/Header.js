@@ -163,6 +163,7 @@ function Header() {
                 icon={faCartShopping}
                 className="fs-5 fa-lg"
                 style={{ cursor: "pointer" }}
+                onClick={() => navigate("/cart")}
               />
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                 0
