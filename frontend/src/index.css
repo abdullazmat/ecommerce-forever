@@ -40,8 +40,7 @@ html {
 .dropdown:hover .dropdown-menu {
   display: block;
   left: auto;
-  right: 30px;
-  top: 30px;
+  right: 0px;
 }
 
 /* Disable blue highlight on dropdown item click */
@@ -74,5 +73,37 @@ html {
 @media (min-width: 992px) {
   .fs-cartitem {
     font-size: 1.3rem !important;
+  }
+}
+
+/* Radio Color Changed  */
+input[type="radio"] {
+  accent-color: green;
+  transform: scale(1.2); /* Increase size */
+}
+
+/* Order Item Product Name Font Size Responsiveness */
+.fs-orderitem {
+  font-size: 0.85rem !important; /* Default size for extra small screens */
+}
+
+/* Small screens (≥576px) */
+@media (min-width: 576px) {
+  .fs-orderitem {
+    font-size: 0.9rem !important;
+  }
+}
+
+/* Medium screens (≥768px) */
+@media (min-width: 768px) {
+  .fs-orderitem {
+    font-size: 0.95rem !important;
+  }
+}
+
+/* Large screens (≥992px) */
+@media (min-width: 992px) {
+  .fs-orderitem {
+    font-size: 1rem !important;
   }
 }

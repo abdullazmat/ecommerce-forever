@@ -1,8 +1,11 @@
 import React from "react";
 import CartItems from "../Components/Cart/CartItems";
-const cartarray = [1, 2, 3, 4];
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
+  const navigate = useNavigate();
+  const cartarray = [1, 2, 3, 4];
+
   return (
     <div className="container">
       <div className="p-5">
@@ -31,6 +34,16 @@ function Cart() {
           <div className="d-flex mt-4 ">
             <h6 className="fw-bold">Total</h6>
             <h6 className="ms-auto">$ 200</h6>
+          </div>
+          <div className="mt-4 d-flex justify-content-end ">
+            <button
+              type="submit"
+              className="btn btn-dark text-white w-100 w-md-50"
+              style={{ borderRadius: "0" }}
+              onClick={() => navigate("/place-order")}
+            >
+              Proceed to Checkout
+            </button>
           </div>
         </div>
       </div>

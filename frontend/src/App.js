@@ -12,6 +12,8 @@ import PrivateRoute from "./Components/user/PrivateRoute.js";
 import About from "./Pages/About.js";
 import Contact from "./Pages/Contact.js";
 import Cart from "./Pages/Cart.js";
+import PlaceOrder from "./Components/Cart/PlaceOrder.js";
+import Orders from "./Components/Cart/Orders.js";
 
 function App() {
   return (
@@ -35,7 +37,10 @@ function App() {
             ></Route>
             <Route path="/collections" element={<Collections />}></Route>
 
-            <Route element={<PrivateRoute />}></Route>
+            <Route element={<PrivateRoute />}>
+              <Route path="/place-order" element={<PlaceOrder />} />
+              <Route path="/orders" element={<Orders />} />
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

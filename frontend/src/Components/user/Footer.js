@@ -16,15 +16,13 @@ function Footer() {
           <div className="">
             <a
               href="/"
-              className="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none"
+              className="d-flex align-items-center  link-body-emphasis text-decoration-none"
             >
               <img src={assets.logo} alt="logo" style={{ width: "100px" }} />
             </a>
-            <p className="text-body-secondary">
+            <p className="text-body-secondary py-3 py-md-0 ">
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book.
+              industry.
             </p>
           </div>
 
