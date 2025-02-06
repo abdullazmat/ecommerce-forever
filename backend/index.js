@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import connectDB from "./utils/db.js";
 dotenv.config();
 import userRoutes from "./routes/user.route.js";
+import adminRoutes from "./routes/admin.route.js";
+
 import path from "path";
 
 const app = express();
@@ -42,6 +44,7 @@ app.use(
 
 // API Routes
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/admin", adminRoutes);
 // app.use("/api/v1/products", productRoutes);
 // app.use("/api/v1/orders", orderRoutes);
 // app.use("/api/v1/cart", cartRoutes);

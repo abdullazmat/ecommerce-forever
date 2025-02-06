@@ -36,13 +36,6 @@ html {
   background-color: rgb(249 250 251) !important;
 }
 
-/* Dropdown Styling  */
-.dropdown:hover .dropdown-menu {
-  display: block;
-  left: auto;
-  right: 0px;
-}
-
 /* Disable blue highlight on dropdown item click */
 .dropdown-item:active,
 .dropdown-item:focus {

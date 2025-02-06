@@ -121,6 +121,18 @@ function Header() {
                 Contact
               </Link>
             </li>
+            <li className="nav-item">
+              <Link
+                to="/admin-panel"
+                className="nav-link px-3 border"
+                style={{
+                  color: "black",
+                  borderRadius: "10px",
+                }}
+              >
+                Admin Panel
+              </Link>
+            </li>
           </ul>
 
           {/* Icons and Mobile Toggle Button */}
@@ -141,6 +153,8 @@ function Header() {
                 onClick={user ? undefined : () => navigate("/login")}
                 className="me-4 fa-lg dropdown-toggle"
                 style={{ cursor: "pointer" }}
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
               />
               {user ? (
                 <ul className="dropdown-menu dropdown-menu-start">
@@ -236,6 +250,13 @@ function Header() {
                 onClick={() => setMenuOpen(false)}
               >
                 Contact
+              </Link>
+              <Link
+                to="/admin-panel"
+                className={`mb-3 text-decoration-none text-dark p-2 fs-5  `}
+                onClick={() => setMenuOpen(false)}
+              >
+                Admin Panel
               </Link>
             </div>
           </div>
