@@ -5,6 +5,7 @@ import { faStar, faStarHalf } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import RelatedCollectionS from "../Components/user/RelatedCollections";
 import Toast from "../Components/user/Toast";
+import Reviews from "../Components/user/Reviews";
 
 function ProductPage() {
   const sizes = ["S", "M", "L", "XL", "XXL"];
@@ -18,6 +19,7 @@ function ProductPage() {
   const [activeTab, setActiveTab] = useState("description");
 
   const images = [1, 2, 3, 4];
+  const reviews = [1, 2, 3];
 
   return (
     <div className="container mt-0 mt-md-3 d-flex flex-wrap justify-content-between py-2 py-sm-0 py-md-0 py-lg-2 px-4 px-sm-0 px-md-0 px-lg-5">
@@ -114,7 +116,7 @@ function ProductPage() {
           </div>
         </div>
       </div>
-      <div className="mt-5 order-4">
+      <div className="mt-5 order-4 col-12">
         <ul className="nav nav-tabs" id="myTab" role="tablist">
           <li className="nav-item" role="presentation">
             <button
@@ -147,7 +149,7 @@ function ProductPage() {
               aria-selected={activeTab === "reviews"}
               onClick={() => setActiveTab("reviews")}
             >
-              Reviews (122)
+              Reviews (12)
             </button>
           </li>
         </ul>
@@ -169,12 +171,50 @@ function ProductPage() {
             </p>
           </div>
           <div
-            className="tab-pane fade p-3 p-sm-4 border"
+            className="tab-pane fade p-3 p-sm-4 border col-12"
             id="reviews"
             role="tabpanel"
             aria-labelledby="reviews-tab"
           >
-            Reviews
+            {reviews.map((review, index) => (
+              <div className="border mt-3 p-3">
+                <div className="d-flex  col-md-4 col-lg-3">
+                  <p className="fw-medium">
+                    <span className="fw-bold">Posted By : </span>abdullah{" "}
+                  </p>
+                </div>
+                <div className="d-flex justify-content-between align-items-center col-12 col-sm-6 col-md-4 col-lg-3">
+                  <div className="d-flex">
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      style={{ color: "#FF532E" }}
+                    />
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      style={{ color: "#FF532E" }}
+                    />
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      style={{ color: "#FF532E" }}
+                    />
+                    <FontAwesomeIcon
+                      icon={faStar}
+                      style={{ color: "#FF532E" }}
+                    />
+                    <FontAwesomeIcon
+                      icon={faStarHalf}
+                      style={{ color: "#FF532E" }}
+                    />
+                  </div>
+                  <div> 12-Feb-2025</div>
+                </div>
+                <div className=" col-12 col-md-9 mt-3">
+                  <p className="p-0 m-0">
+                    Awesome Product Awesome Experience Everything just Awesome
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

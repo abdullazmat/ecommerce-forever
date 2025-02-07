@@ -5,7 +5,7 @@ function RelatedCollections() {
   const cards = [1, 2, 3, 4, 5];
 
   return (
-    <div className="container mt-0 mt-md-5">
+    <div className="container mt-3 mt-md-5">
       <div className="d-flex align-items-center justify-content-center flex-column">
         <div>
           <h2 style={{ color: "#212529" }}>
