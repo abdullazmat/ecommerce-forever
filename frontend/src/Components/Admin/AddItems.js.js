@@ -166,7 +166,7 @@ function AddItems() {
                   </div>
                   <div className="dropdown">
                     <button
-                      className="btn dropdown-toggle  text-start"
+                      className="btn dropdown-toggle col-12 col-sm-8 col-md-9  text-start"
                       style={{ border: "2px solid black" }}
                       type="button"
                       data-bs-toggle="dropdown"
@@ -199,7 +199,7 @@ function AddItems() {
                   </div>
                   <div className="dropdown">
                     <button
-                      className="btn dropdown-toggle w-100 text-start"
+                      className="btn dropdown-toggle col-12 col-sm-8 col-md-9   text-start"
                       style={{ border: "2px solid black" }}
                       type="button"
                       data-bs-toggle="dropdown"

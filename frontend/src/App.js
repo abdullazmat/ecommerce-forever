@@ -16,12 +16,16 @@ import PlaceOrder from "./Components/Cart/PlaceOrder.js";
 import Orders from "./Components/Cart/Orders.js";
 import AdminPanel from "./Pages/AdminPanel.js";
 import AddItems from "./Components/Admin/AddItems.js";
+import ListItems from "./Components/Admin/ListItems.js";
+import OrderedItems from "./Components/Admin/OrderedItems.js";
 
 function Layout() {
   const location = useLocation();
   const hideHeaderFooter =
     location.pathname === "/admin-panel" ||
-    location.pathname === "/admin-panel/add";
+    location.pathname === "/admin-panel/add" ||
+    location.pathname === "/admin-panel/list" ||
+    location.pathname === "/admin-panel/orders";
 
   return (
     <div className="app-container d-flex flex-column min-vh-100">
@@ -44,6 +48,8 @@ function Layout() {
           <Route path="*" element={<NotFound />} />
           <Route path="/admin-panel" element={<AdminPanel />} />
           <Route path="/admin-panel/add" element={<AddItems />} />
+          <Route path="/admin-panel/list" element={<ListItems />} />
+          <Route path="/admin-panel/orders" element={<OrderedItems />} />
         </Routes>
       </div>
       {!hideHeaderFooter && <Footer />}
