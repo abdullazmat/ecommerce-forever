@@ -62,7 +62,7 @@ function Footer() {
               </li>
               <li className="nav-item ">
                 <p href="#" className="nav-link p-0 mb-2 text-body-secondary">
-                  greatstackdev@gmail.com
+                  info@forever.com
                 </p>
               </li>
               <li className="nav-item ">

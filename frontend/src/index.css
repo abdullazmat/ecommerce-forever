@@ -100,3 +100,32 @@ input[type="radio"] {
     font-size: 1rem !important;
   }
 }
+
+/* Image Zoom Out Effect */
+.product-card {
+  overflow: hidden;
+}
+
+.product-img {
+  transition: transform 0.3s ease-in-out;
+}
+
+.product-img:hover {
+  transform: scale(1.1); /* Zoom-in effect */
+  cursor: pointer;
+}
+
+/* Toast STYLING (≥992px) */
+.toast {
+  transform: translateX(100%); /* Initially off-screen to the right */
+  transition: transform 1s ease, opacity 1s ease;
+}
+
+.toast.show {
+  transform: translateX(0); /* Slide in from the right */
+}
+
+.toast.fade-out {
+  opacity: 0;
+  transform: translateX(100%); /* Slide back to the right */
+}

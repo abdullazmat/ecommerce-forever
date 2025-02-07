@@ -18,6 +18,7 @@ import AdminPanel from "./Pages/AdminPanel.js";
 import AddItems from "./Components/Admin/AddItems.js";
 import ListItems from "./Components/Admin/ListItems.js";
 import OrderedItems from "./Components/Admin/OrderedItems.js";
+import ProductPage from "./Pages/ProductPage.js";
 
 function Layout() {
   const location = useLocation();
@@ -41,6 +42,7 @@ function Layout() {
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/reset-password/:token" element={<UpdatePassword />} />
           <Route path="/collections" element={<Collections />} />
+          <Route path="/product" element={<ProductPage />} />
           <Route element={<PrivateRoute />}>
             <Route path="/place-order" element={<PlaceOrder />} />
             <Route path="/orders" element={<Orders />} />

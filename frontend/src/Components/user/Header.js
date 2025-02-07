@@ -221,7 +221,7 @@ function Header() {
               </Link>
               <Link
                 className={`mb-3 text-decoration-none text-dark p-2 fs-5 ${
-                  isActive("/collection") ? "toggline-active" : ""
+                  isActive("/collections") ? "toggline-active" : ""
                 }`}
                 onClick={() => {
                   setMenuOpen(false);
