@@ -1,10 +1,15 @@
 import React from "react";
 import { assets } from "../../assets/frontend_assets/assets";
+import { useNavigate } from "react-router-dom";
 
 function BestSellersCards({ product }) {
+  const navigate = useNavigate();
   return (
     <div className="col ">
-      <div className="card shadow-sm " style={{ overflow: "hidden" }}>
+      <div
+        className="card shadow-sm "
+        onClick={() => navigate(`/product/${product?._id}`)}
+      >
         <img
           className="bd-placeholder-img card-img-top product-img"
           src={product?.images[0]?.url}

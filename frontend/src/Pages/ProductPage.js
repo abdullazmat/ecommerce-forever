@@ -6,8 +6,19 @@ import { useState } from "react";
 import RelatedCollectionS from "../Components/user/RelatedCollections";
 import Toast from "../Components/user/Toast";
 import Reviews from "../Components/user/Reviews";
+import { useParams } from "react-router-dom";
+import useGetProductData from "../Hooks/useGetProductData";
+import { useSelector } from "react-redux";
 
 function ProductPage() {
+  const { id } = useParams();
+  const [loading, setLoading] = useState(false);
+  useGetProductData({ id, setLoading });
+
+  const { productData } = useSelector((state) => state.product);
+
+  const [imageIndex, setImageIndex] = useState(0);
+
   const sizes = ["S", "M", "L", "XL", "XXL"];
   const [selectedIndex, setSelectedIndex] = useState([]);
   const handleSizeClick = (index) => {
@@ -21,23 +32,29 @@ function ProductPage() {
   const images = [1, 2, 3, 4];
   const reviews = [1, 2, 3];
 
+  if (loading) {
+    return <div></div>;
+  }
+
   return (
     <div className="container mt-0 mt-md-3 d-flex flex-wrap justify-content-between py-2 py-sm-0 py-md-0 py-lg-2 px-4 px-sm-0 px-md-0 px-lg-5">
       <div className="  col-12 col-sm-1 col-md-2 col-lg-1 order-2 order-sm-1 mt-3 mt-sm-0 ">
         <div className="d-flex flex-row flex-sm-column col-7   align-items-center ">
-          {images.map((image, index) => (
+          {productData?.images.map((image, index) => (
             <img
-              src={assets.p_img1}
+              key={index}
+              src={image?.url}
+              onClick={() => setImageIndex(index)}
               className="col-3 col-sm-4 ms-3 ms-sm-0 col-sm-12 mt-sm-3"
               alt="product"
-              style={{ objectFit: "cover" }}
+              style={{ objectFit: "cover", cursor: "pointer" }}
             />
           ))}
         </div>
       </div>
       <div className=" col-12 col-sm-4 col-md-4 col-lg-5   me-0 me-md-5 mt-4 mt-sm-0   order-1 order-sm-1">
         <img
-          src={assets.p_img1}
+          src={productData?.images[imageIndex]?.url}
           className="col-12"
           alt="product"
           style={{ objectFit: "cover" }}
@@ -46,7 +63,7 @@ function ProductPage() {
 
       <div className="col-12 col-sm-6 col-md-5 col-lg-5 mt-4 mt-sm-0 order-3">
         <div className="py-2 col-12">
-          <h3>Men Round Neck Pure Cotton T-shirt</h3>
+          <h3>{productData?.productName}</h3>
         </div>
         <div className="py-2 col-12">
           <FontAwesomeIcon icon={faStar} style={{ color: "#FF532E" }} />
@@ -57,22 +74,16 @@ function ProductPage() {
           <span className="fw-bold"> (12)</span>
         </div>
         <div className="py-2 col-12">
-          <h3 className="fw-bold">$50</h3>
+          <h3 className="fw-bold">${productData?.price}</h3>
         </div>
         <div className="py-2 col-12 col-lg-9">
-          <p className="p-0 m-0">
-            A lightweight, usually knitted, pullover shirt, close-fitting and
-            with a round neckline and short sleeves, worn as an undershirt or
-            outer
-            <br />
-            garment.
-          </p>
+          <p className="p-0 m-0">{productData?.description}</p>
         </div>
         <div className="py-2 col-12">
           <p className="fw-bold p-0 m-0">Select Size</p>
         </div>
-        <div className=" col-9 col-sm-12 col-md-12 col-lg-9 py-2 d-flex justify-content-between">
-          {sizes.map((size, index) => (
+        <div className="col-9 col-sm-12 col-md-12 col-lg-6 py-2 d-flex flex-wrap gap-2">
+          {productData?.size.map((size, index) => (
             <p
               key={index}
               className="px-3 py-1 m-0"
@@ -84,6 +95,8 @@ function ProductPage() {
                 color: "black",
                 borderRadius: "0",
                 cursor: "pointer",
+                minWidth: "50px", // Ensures a consistent size
+                textAlign: "center",
               }}
               onClick={() => handleSizeClick(index)}
             >
@@ -91,6 +104,7 @@ function ProductPage() {
             </p>
           ))}
         </div>
+
         <div className="py-4 col-12">
           <button
             className="btn btn-dark text-white px-4 py-2"
@@ -222,9 +236,6 @@ function ProductPage() {
       <div className="order-5">
         <RelatedCollectionS />
       </div>
-      {/* <div class="col-12 col-lg-6 mb-4">
-        <Toast />
-      </div> */}
     </div>
   );
 }

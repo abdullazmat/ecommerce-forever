@@ -14,12 +14,20 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../../Redux/authSlice";
 import { USER_API_END_POINT } from "../../Utils/constant";
 import axios from "axios";
+import { setSearchText } from "../../Redux/productSlice";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [input, setInput] = useState("");
+
+  useEffect(() => {
+    dispatch(setSearchText(input));
+  }, [input]);
+
+  console.log(input);
 
   // Redux States
   const { user } = useSelector((state) => state.auth);
@@ -220,6 +228,7 @@ function Header() {
                 Home
               </Link>
               <Link
+                to="/collections"
                 className={`mb-3 text-decoration-none text-dark p-2 fs-5 ${
                   isActive("/collections") ? "toggline-active" : ""
                 }`}
@@ -267,9 +276,10 @@ function Header() {
           <div className=" w-100  bg-white d-flex align-items-center justify-content-center container  search-box ">
             <div className="w-75 w-md-50 d-flex">
               <input
-                type="text"
+                type="search"
                 placeholder="Search"
                 className="form-control input-custom "
+                onChange={(e) => setInput(e.target.value)}
               />
               <button className="btn bg-black " style={{ borderRadius: "0" }}>
                 <FontAwesomeIcon

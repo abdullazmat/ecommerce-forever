@@ -1,8 +1,9 @@
 import React from "react";
 import RelatedCollectionCards from "./RelatedCollectionCards";
+import { useSelector } from "react-redux";
 
 function RelatedCollections() {
-  const cards = [1, 2, 3, 4, 5];
+  const { allProducts } = useSelector((state) => state.product);
 
   return (
     <div className="container mt-3 mt-md-5">
@@ -14,8 +15,8 @@ function RelatedCollections() {
         </div>
       </div>
       <div className="  mt-3 row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3 mb-0 mb-md-5">
-        {cards.slice(0, 10).map((card) => (
-          <RelatedCollectionCards key={card} />
+        {allProducts.slice(0, 5).map((product) => (
+          <RelatedCollectionCards key={product?._id} product={product} />
         ))}
       </div>
     </div>

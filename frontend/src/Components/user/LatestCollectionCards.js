@@ -5,7 +5,7 @@ function LatestCollectionCards({ product }) {
   const navigate = useNavigate();
   return (
     <div className="col">
-      <div className="" onClick={() => navigate("/product")}>
+      <div className="" onClick={() => navigate(`/product/${product?._id}`)}>
         <img
           className="bd-placeholder-img card-img-top product-img"
           src={product?.images[0]?.url}

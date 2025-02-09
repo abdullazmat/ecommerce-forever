@@ -28,7 +28,7 @@ function AddItems() {
     productName: "",
     description: "",
     category: "Men",
-    subCategory: "Topware",
+    subCategory: "Topwear",
     price: "",
     images: [],
     size: [],
@@ -154,7 +154,7 @@ function AddItems() {
         productName: "",
         description: "",
         category: "Men",
-        subCategory: "Topware",
+        subCategory: "Topwear",
         price: "",
         images: [],
         size: [],
@@ -366,34 +366,34 @@ function AddItems() {
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      {productData.subCategory || "Topware"}
+                      {productData.subCategory || "Topwear"}
                     </button>
                     <ul className="dropdown-menu">
                       <li>
                         <a
                           className="dropdown-item"
                           href="#"
-                          onClick={() => handleSubCategory("Topware")}
+                          onClick={() => handleSubCategory("Topwear")}
                         >
-                          Topware
+                          Topwear
                         </a>
                       </li>
                       <li>
                         <a
                           className="dropdown-item"
                           href="#"
-                          onClick={() => handleSubCategory("Bottomware")}
+                          onClick={() => handleSubCategory("Bottomwear")}
                         >
-                          Bottomware
+                          Bottomwear
                         </a>
                       </li>
                       <li>
                         <a
                           className="dropdown-item"
                           href="# "
-                          onClick={() => handleSubCategory("Winterware")}
+                          onClick={() => handleSubCategory("Winterwear")}
                         >
-                          Winterware
+                          Winterwear
                         </a>
                       </li>
                     </ul>
