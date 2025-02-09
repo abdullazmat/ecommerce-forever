@@ -9,17 +9,33 @@ import Reviews from "../Components/user/Reviews";
 import { useParams } from "react-router-dom";
 import useGetProductData from "../Hooks/useGetProductData";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { CART_API_END_POINT } from "../Utils/constant.js";
+import useGetAllCartItems from "../Hooks/useGetCartItems.js";
+import { useDispatch } from "react-redux";
+import { setAllCartItems } from "../Redux/cartSlice.js";
 
 function ProductPage() {
+  const { cart } = useSelector((state) => state.cart);
+  useGetAllCartItems(cart?.length);
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
+  const [formloading, setFormLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
   useGetProductData({ id, setLoading });
 
   const { productData } = useSelector((state) => state.product);
+  const { allCartItems } = useSelector((state) => state.cart);
+  const [cartData, setCartData] = useState({
+    productName: productData?.productName,
+    size: [],
+    price: productData?.price,
+    images: productData?.images,
+    quantity: 1,
+  });
 
-  const [imageIndex, setImageIndex] = useState(0);
-
-  const sizes = ["S", "M", "L", "XL", "XXL"];
+  // Add Color to sizes selected
   const [selectedIndex, setSelectedIndex] = useState([]);
   const handleSizeClick = (index) => {
     setSelectedIndex((prev) =>
@@ -27,9 +43,76 @@ function ProductPage() {
     );
   };
 
+  // Handling size Form Data selection/deselection
+  const handleSize = (size) => {
+    setCartData((prevData) => {
+      const newSize = prevData.size.includes(size)
+        ? prevData.size.filter((s) => s !== size)
+        : [...prevData.size, size];
+
+      return { ...prevData, size: newSize };
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      console.log(cartData);
+      if (cartData?.size.length === 0) {
+        setError("Select Size");
+        setTimeout(() => {
+          setError(null);
+        }, 3000);
+        setTimeout(() => {
+          setFormLoading(false);
+        }, 2000);
+
+        return;
+      }
+
+      setFormLoading(true);
+
+      const formData = new FormData();
+      formData.append("productName", productData.productName);
+      formData.append("price", productData.price);
+      formData.append("size", JSON.stringify(cartData.size));
+      formData.append("images", productData.images[0].url);
+      formData.append("quantity", 1);
+
+      console.log("FormData content:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
+      const response = await axios.post(`${CART_API_END_POINT}/add`, formData, {
+        headers: { "Content-Type": "application/json" },
+      });
+      const updatedCart = allCartItems?.push(response?.data?.cart);
+      dispatch(setAllCartItems(updatedCart));
+
+      setCartData({
+        productName: "",
+        price: "",
+        images: [],
+        size: [],
+        quantity: 1,
+      });
+      setSelectedIndex([]);
+      setFormLoading(false);
+
+      console.log("Added to Cart:", response?.data?.cart);
+    } catch (error) {
+      console.log(error);
+      setError(error.response?.data?.message || "Something went wrong");
+      console.log(error);
+      setFormLoading(false);
+    }
+  };
+
+  const [imageIndex, setImageIndex] = useState(0);
+
   const [activeTab, setActiveTab] = useState("description");
 
-  const images = [1, 2, 3, 4];
   const reviews = [1, 2, 3];
 
   if (loading) {
@@ -38,6 +121,7 @@ function ProductPage() {
 
   return (
     <div className="container mt-0 mt-md-3 d-flex flex-wrap justify-content-between py-2 py-sm-0 py-md-0 py-lg-2 px-4 px-sm-0 px-md-0 px-lg-5">
+      {error && <Toast message={error} />}
       <div className="  col-12 col-sm-1 col-md-2 col-lg-1 order-2 order-sm-1 mt-3 mt-sm-0 ">
         <div className="d-flex flex-row flex-sm-column col-7 col-md-9 col-lg-12   align-items-center ">
           {productData?.images.map((image, index) => (
@@ -62,73 +146,79 @@ function ProductPage() {
       </div>
 
       <div className="col-12 col-sm-6 col-md-5 col-lg-5 mt-4 mt-sm-0 order-3">
-        <div className="py-2 col-12">
-          <h3>{productData?.productName}</h3>
-        </div>
-        <div className="py-2 col-12">
-          <FontAwesomeIcon icon={faStar} style={{ color: "#FF532E" }} />
-          <FontAwesomeIcon icon={faStar} style={{ color: "#FF532E" }} />
-          <FontAwesomeIcon icon={faStar} style={{ color: "#FF532E" }} />
-          <FontAwesomeIcon icon={faStar} style={{ color: "#FF532E" }} />
-          <FontAwesomeIcon icon={faStarHalf} style={{ color: "#FF532E" }} />
-          <span className="fw-bold"> (12)</span>
-        </div>
-        <div className="py-2 col-12">
-          <h3 className="fw-bold">${productData?.price}</h3>
-        </div>
-        <div className="py-2 col-12 col-lg-9">
-          <p className="p-0 m-0">{productData?.description}</p>
-        </div>
-        <div className="py-2 col-12">
-          <p className="fw-bold p-0 m-0">Select Size</p>
-        </div>
-        <div className="col-9 col-sm-12 col-md-12 col-lg-6 py-2 d-flex flex-wrap gap-2">
-          {productData?.size.map((size, index) => (
-            <p
-              key={index}
-              className="px-3 py-1 m-0"
-              style={{
-                backgroundColor: selectedIndex.includes(index)
-                  ? "#FF532E"
-                  : "#E2E8F0",
-                opacity: "0.6",
-                color: "black",
-                borderRadius: "0",
-                cursor: "pointer",
-                minWidth: "50px", // Ensures a consistent size
-                textAlign: "center",
-              }}
-              onClick={() => handleSizeClick(index)}
-            >
-              {size}
-            </p>
-          ))}
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="py-2 col-12">
+            <h3>{productData?.productName}</h3>
+          </div>
+          <div className="py-2 col-12">
+            <FontAwesomeIcon icon={faStar} style={{ color: "#FF532E" }} />
+            <FontAwesomeIcon icon={faStar} style={{ color: "#FF532E" }} />
+            <FontAwesomeIcon icon={faStar} style={{ color: "#FF532E" }} />
+            <FontAwesomeIcon icon={faStar} style={{ color: "#FF532E" }} />
+            <FontAwesomeIcon icon={faStarHalf} style={{ color: "#FF532E" }} />
+            <span className="fw-bold"> (12)</span>
+          </div>
+          <div className="py-2 col-12">
+            <h3 className="fw-bold">${productData?.price}</h3>
+          </div>
+          <div className="py-2 col-12 col-lg-9">
+            <p className="p-0 m-0">{productData?.description}</p>
+          </div>
+          <div className="py-2 col-12">
+            <p className="fw-bold p-0 m-0">Select Size</p>
+          </div>
+          <div className="col-9 col-sm-12 col-md-12 col-lg-6 py-2 d-flex flex-wrap gap-2">
+            {productData?.size.map((size, index) => (
+              <p
+                key={index}
+                className="px-3 py-1 m-0"
+                style={{
+                  backgroundColor: selectedIndex.includes(index)
+                    ? "#FF532E"
+                    : "#E2E8F0",
+                  opacity: "0.6",
+                  color: "black",
+                  borderRadius: "0",
+                  cursor: "pointer",
+                  minWidth: "50px", // Ensures a consistent size
+                  textAlign: "center",
+                }}
+                onClick={() => {
+                  handleSizeClick(index);
+                  handleSize(size);
+                }}
+              >
+                {size}
+              </p>
+            ))}
+          </div>
 
-        <div className="py-4 col-12">
-          <button
-            className="btn btn-dark text-white px-4 py-2"
-            style={{ borderRadius: "0" }}
-          >
-            Add to Cart
-          </button>
-        </div>
-        <hr />
-        <div className="d-flex flex-column py-2">
-          <div className="col-12">
-            <p className="fw-light p-0 m-0">100% Original product.</p>
+          <div className="py-4 col-12">
+            <button
+              className="btn btn-dark text-white px-4 py-2"
+              style={{ borderRadius: "0" }}
+              type="submit"
+            >
+              {formloading ? "Loading..." : "Add to Cart"}
+            </button>
           </div>
-          <div className="col-12">
-            <p className="fw-light p-0 m-0">
-              Cash on delivery is available on this product.
-            </p>
+          <hr />
+          <div className="d-flex flex-column py-2">
+            <div className="col-12">
+              <p className="fw-light p-0 m-0">100% Original product.</p>
+            </div>
+            <div className="col-12">
+              <p className="fw-light p-0 m-0">
+                Cash on delivery is available on this product.
+              </p>
+            </div>
+            <div className=" col-12">
+              <p className="fw-light p-0 m-0">
+                Easy return and exchange policy within 7 days.
+              </p>
+            </div>
           </div>
-          <div className=" col-12">
-            <p className="fw-light p-0 m-0">
-              Easy return and exchange policy within 7 days.
-            </p>
-          </div>
-        </div>
+        </form>
       </div>
       <div className="mt-5 order-4 col-12">
         <ul className="nav nav-tabs" id="myTab" role="tablist">

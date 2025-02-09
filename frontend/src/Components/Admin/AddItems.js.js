@@ -64,7 +64,7 @@ function AddItems() {
     console.log(productData);
   };
 
-  // Handling size selection/deselection
+  // Handling size Form Data selection/deselection
   const handleSize = (size) => {
     setProductData((prevData) => {
       const newSize = prevData.size.includes(size)

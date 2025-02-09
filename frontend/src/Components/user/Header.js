@@ -31,6 +31,7 @@ function Header() {
 
   // Redux States
   const { user } = useSelector((state) => state.auth);
+  const { cart } = useSelector((state) => state.cart);
 
   // Use States
   const [success, setSuccess] = useState(false);
@@ -188,7 +189,7 @@ function Header() {
                 onClick={() => navigate("/cart")}
               />
               <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                0
+                {cart?.length}
               </span>
             </div>
             {/* Mobile Menu Toggle */}

@@ -23,7 +23,7 @@ const useGetProductData = ({ id, setLoading }) => {
       }
     };
     getProductData();
-  }, [id, setLoading]);
+  }, [id]);
 };
 
 export default useGetProductData;

@@ -7,6 +7,7 @@ dotenv.config();
 import userRoutes from "./routes/user.route.js";
 import adminRoutes from "./routes/admin.route.js";
 import productRoutes from "./routes/product.route.js";
+import cartRoutes from "./routes/cart.route.js";
 
 import path from "path";
 
@@ -47,8 +48,8 @@ app.use(
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/product", productRoutes);
+app.use("/api/v1/cart", cartRoutes);
 // app.use("/api/v1/orders", orderRoutes);
-// app.use("/api/v1/cart", cartRoutes);
 // app.use("/api/v1/payment", paymentRoutes);
 // app.use("/api/v1/reviews", reviewRoutes);
 
