@@ -3,7 +3,7 @@ import { assets } from "../assets/frontend_assets/assets";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faStarHalf } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import RelatedCollectionS from "../Components/user/RelatedCollections";
+import RelatedCollections from "../Components/user/RelatedCollections";
 import Toast from "../Components/user/Toast";
 import Reviews from "../Components/user/Reviews";
 import { useParams } from "react-router-dom";
@@ -39,7 +39,7 @@ function ProductPage() {
   return (
     <div className="container mt-0 mt-md-3 d-flex flex-wrap justify-content-between py-2 py-sm-0 py-md-0 py-lg-2 px-4 px-sm-0 px-md-0 px-lg-5">
       <div className="  col-12 col-sm-1 col-md-2 col-lg-1 order-2 order-sm-1 mt-3 mt-sm-0 ">
-        <div className="d-flex flex-row flex-sm-column col-7   align-items-center ">
+        <div className="d-flex flex-row flex-sm-column col-7 col-md-9 col-lg-12   align-items-center ">
           {productData?.images.map((image, index) => (
             <img
               key={index}
@@ -233,8 +233,8 @@ function ProductPage() {
         </div>
       </div>
 
-      <div className="order-5">
-        <RelatedCollectionS />
+      <div className="order-5 col-12">
+        <RelatedCollections productData={productData} />
       </div>
     </div>
   );

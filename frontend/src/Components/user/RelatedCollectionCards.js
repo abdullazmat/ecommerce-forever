@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 function RelatedCollectionCards({ product }) {
   const navigate = useNavigate();
   return (
-    <div className="col-12">
+    <div className="col-12 col-sm-6 col-md-4 col-lg-3">
       <div
         className="product-card "
         onClick={() => navigate(`/product/${product?._id}`)}
