@@ -172,7 +172,7 @@ function ListItems() {
                   ) : (
                     <tr>
                       <td colSpan="6" className="text-center text-danger">
-                        No Applicants
+                        No Products Listed
                       </td>
                     </tr>
                   )}

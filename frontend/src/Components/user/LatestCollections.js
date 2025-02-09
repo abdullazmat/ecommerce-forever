@@ -1,8 +1,9 @@
 import React from "react";
 import LatestCollectionCards from "./LatestCollectionCards";
+import { useSelector } from "react-redux";
 
 function LatestCollections() {
-  const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+  const { allProducts } = useSelector((state) => state.product);
 
   return (
     <div className="container mt-5">
@@ -18,8 +19,8 @@ function LatestCollections() {
         </div>
       </div>
       <div className="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3 mb-5">
-        {cards.slice(0, 10).map((card) => (
-          <LatestCollectionCards key={card} />
+        {allProducts.slice(0, 10).map((product, index) => (
+          <LatestCollectionCards key={product?._id} product={product} />
         ))}
       </div>
     </div>

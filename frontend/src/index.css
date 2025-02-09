@@ -129,3 +129,10 @@ input[type="radio"] {
   opacity: 0;
   transform: translateX(100%); /* Slide back to the right */
 }
+
+/* Product Name Styling */
+.product-name {
+  min-height: 30px; /* Adjust based on expected text size */
+  display: flex;
+  align-items: center; /* Centers single-line text */
+}

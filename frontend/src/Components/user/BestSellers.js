@@ -1,8 +1,9 @@
 import React from "react";
 import BestSellersCards from "./BestSellersCards";
+import { useSelector } from "react-redux";
 
 function BestSellers() {
-  const cards = [1, 2, 3, 4, 5, 6];
+  const { allProducts } = useSelector((state) => state.product);
 
   return (
     <div className="container mt-5">
@@ -18,8 +19,8 @@ function BestSellers() {
         </div>
       </div>
       <div className="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3">
-        {cards.slice(0, 5).map((card) => (
-          <BestSellersCards key={card} />
+        {allProducts.slice(0, 5).map((product, index) => (
+          <BestSellersCards key={product?._id} product={product} />
         ))}
       </div>
     </div>

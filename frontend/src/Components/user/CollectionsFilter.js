@@ -6,13 +6,11 @@ import NotFound from "../shared/notFound";
 import { Navigate } from "react-router-dom";
 
 function CollectionsFilter() {
-  const collectionProducts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const { allProducts } = useSelector((state) => state.product);
 
   const categories = ["Men", "Women", "Kids"];
   const subCategory = ["Topwear", "Bottomwear", "Footwear"];
-  const [filteredProducts, setFilteredProducts] = useState(
-    collectionProducts || []
-  );
+  const [filteredProducts, setFilteredProducts] = useState(allProducts || []);
 
   // States for checkbox filters
   const [selectedCategories, setselectedCategories] = useState({});
@@ -30,7 +28,7 @@ function CollectionsFilter() {
   // Filter Collections based on selected criteria
   useEffect(() => {
     const filterCollections = () => {
-      if (!collectionProducts) return;
+      if (!allProducts) return;
 
       const activeCategories = Object.keys(selectedCategories).filter(
         (key) => selectedCategories[key]
@@ -39,7 +37,7 @@ function CollectionsFilter() {
         (key) => selectedSubCategories[key]
       );
 
-      const filtered = collectionProducts.filter((collection) => {
+      const filtered = allProducts.filter((collection) => {
         const matchesCategory =
           activeCategories.length > 0
             ? activeCategories.includes(collection.category.toLowerCase())
@@ -57,7 +55,7 @@ function CollectionsFilter() {
     };
 
     filterCollections();
-  }, [collectionProducts, selectedCategories]);
+  }, [allProducts, selectedCategories]);
 
   return (
     <div>
@@ -188,17 +186,13 @@ function CollectionsFilter() {
             </div>
 
             <div>
-              {collectionProducts && collectionProducts.length > 0 ? (
+              {allProducts && allProducts.length > 0 ? (
                 <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 mt-3">
-                  {collectionProducts.map((collection, index) => (
+                  {allProducts.map((product, index) => (
                     <div key={index} className="col">
                       <LatestCollectionCards
-                      // id={collection._id}
-                      // title={collection.title}
-                      // category={collection.category}
-                      // subCategory={collection.subCategory}
-                      // price={collection.price}
-                      // image={collection.image}
+                        product={product}
+                        key={product?._id}
                       />
                     </div>
                   ))}
