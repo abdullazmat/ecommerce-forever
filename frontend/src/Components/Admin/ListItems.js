@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCirclePlus,
@@ -8,28 +8,46 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import AdminHeader from "./AdminHeader";
 import { Link } from "react-router-dom";
-import { assets } from "../../assets/frontend_assets/assets";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import { PRODUCT_API_END_POINT } from "../../Utils/constant";
+import { setAllProducts } from "../../Redux/productSlice";
+import useGetAllProducts from "../../Hooks/useGetAllProducts";
+import Toast from "../user/Toast";
 
 function ListItems() {
-  const jobApplications = [
-    {
-      _id: "1",
-      image: assets.p_img2_1,
-      name: "Kid Tapered Slim Fit Trouser",
-      category: "Kids",
-      price: 500,
-    },
-    {
-      _id: "1",
-      image: assets.p_img2_2,
-      name: "Kid Tapered Slim Fit Trouser",
-      category: "Kids",
-      price: 500,
-    },
-  ];
+  const { allProducts } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+  const [loadingProducts, setLoadingProducts] = useState({});
+
+  useGetAllProducts();
+
+  const deleteProduct = async (id) => {
+    setLoadingProducts((prev) => ({ ...prev, [id]: true })); // Set loading for the product being deleted
+    try {
+      await axios.delete(`${PRODUCT_API_END_POINT}/delete/${id}`);
+      const updatedProducts = allProducts.filter(
+        (product) => product._id !== id
+      );
+      dispatch(setAllProducts(updatedProducts));
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingProducts((prev) => ({ ...prev, [id]: false })); // Reset loading once deletion is done
+    }
+  };
+
   return (
     <>
       <AdminHeader />
+      {success && <Toast message="Product deleted successfully" />}
+      {error && <Toast message={error} />}
       <div className="container  d-flex">
         <div
           className="d-flex flex-column flex-shrink-0  col-2 col-md-2 col-lg-3 flex-wrap"
@@ -113,30 +131,40 @@ function ListItems() {
                   </tr>
                 </thead>
                 <tbody>
-                  {jobApplications && jobApplications.length > 0 ? (
-                    jobApplications.map((application, index) => (
-                      <tr key={index}>
+                  {allProducts && allProducts.length > 0 ? (
+                    allProducts.map((product) => (
+                      <tr
+                        key={product._id}
+                        style={{
+                          opacity: loadingProducts[product._id] ? "0.5" : "1",
+                          backgroundColor: loadingProducts[product._id]
+                            ? "#f0f0f0"
+                            : "transparent",
+                        }}
+                      >
                         <td className="text-center align-middle col-1">
                           <img
-                            src={application?.image}
+                            src={product?.images[0]?.url}
                             style={{ width: "70px" }}
                             alt="product"
                             className="img-fluid"
                           />
                         </td>
                         <td className="text-start text-center align-middle col-4">
-                          {application?.name}
+                          {product?.productName}
                         </td>
                         <td className="text-center text-center align-middle col-1">
-                          {application?.category}
+                          {product?.category}
                         </td>
                         <td className="text-center text-center align-middle col-1">
-                          {application?.price}
+                          {product?.price}
                         </td>
                         <td className="text-center align-middle col-1 ">
                           <FontAwesomeIcon
                             icon={faXmark}
                             className="text-danger"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => deleteProduct(product._id)}
                           />
                         </td>
                       </tr>

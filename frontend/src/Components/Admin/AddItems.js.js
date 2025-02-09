@@ -13,6 +13,7 @@ import { setAddProducs } from "../../Redux/productSlice";
 import { useDispatch } from "react-redux";
 import { PRODUCT_API_END_POINT } from "../../Utils/constant";
 import Toast from "../user/Toast";
+import useGetAllProducts from "../../Hooks/useGetAllProducts";
 
 function AddItems() {
   const location = useLocation();
@@ -20,6 +21,8 @@ function AddItems() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useGetAllProducts();
 
   const [productData, setProductData] = useState({
     productName: "",
@@ -97,7 +100,7 @@ function AddItems() {
         setError("Select Size");
         setTimeout(() => {
           setError(null);
-        }, 5000);
+        }, 3000);
         setTimeout(() => {
           setLoading(false);
         }, 2000);
@@ -109,7 +112,7 @@ function AddItems() {
         setError("Select Image");
         setTimeout(() => {
           setError(null);
-        }, 5000);
+        }, 3000);
         setTimeout(() => {
           setLoading(false);
         }, 2000);
@@ -143,11 +146,10 @@ function AddItems() {
         }
       );
       disapatch(setAddProducs(response.data));
-
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
-      }, 5000);
+      }, 3000);
       setProductData({
         productName: "",
         description: "",
@@ -471,8 +473,6 @@ function AddItems() {
             </form>
           </div>
         </div>
-        {success && <Toast message="Product added successfully" />}
-        {error && <Toast message={error} />}
       </div>
     </>
   );

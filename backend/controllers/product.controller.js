@@ -5,6 +5,7 @@ import getDataUri from "../utils/datauri.js";
 
 dotenv.config();
 
+// Add product Controller
 export const addProduct = async (req, res) => {
   try {
     let {
@@ -60,7 +61,6 @@ export const addProduct = async (req, res) => {
           }
         );
 
-        console.log("Cloud response:", cloudResponse);
         images.push({
           url: cloudResponse.secure_url,
           public_id: cloudResponse.public_id,
@@ -87,6 +87,41 @@ export const addProduct = async (req, res) => {
       newProduct,
       success: true,
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get all products Controller
+export const getProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+
+    res.status(200).json({ products, success: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Delete product Controller
+export const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // ✅ Delete images from Cloudinary
+    for (const image of product.images) {
+      await cloudinary.uploader.destroy(image.public_id);
+    }
+
+    await Product.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

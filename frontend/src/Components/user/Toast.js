@@ -9,7 +9,7 @@ function Toast({ message }) {
     if (toastRef.current) {
       const toast = new window.bootstrap.Toast(toastRef.current, {
         autohide: true,
-        delay: 5000, // Bootstrap will handle the delay
+        delay: 3000, // Bootstrap will handle the delay
       });
       toast.show();
     }
