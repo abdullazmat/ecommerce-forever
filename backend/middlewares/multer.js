@@ -1,4 +1,5 @@
 import multer from "multer";
 
-const storage = multer.memoryStorage();
-export const singleUpload = multer({ storage }).single("file");
+const storage = multer.memoryStorage(); // Store files in memory, not disk
+
+export const multipleUpload = multer({ storage }).array("images", 4);

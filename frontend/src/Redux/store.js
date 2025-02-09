@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import authSlice from "./authSlice";
 import adminSlice from "./adminSlice";
+import productSlice from "./productSlice";
 
 import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
@@ -9,6 +10,7 @@ import { persistReducer } from "redux-persist";
 const rootReducer = combineReducers({
   auth: authSlice,
   admin: adminSlice,
+  product: productSlice,
 });
 
 const persistConfig = {

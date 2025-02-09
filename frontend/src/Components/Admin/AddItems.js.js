@@ -7,12 +7,30 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
 import AdminHeader from "./AdminHeader";
-import { useSelector } from "react-redux";
 import { assets } from "../../assets/admin_assets/assets";
+import axios from "axios";
+import { setAddProducs } from "../../Redux/productSlice";
+import { useDispatch } from "react-redux";
+import { PRODUCT_API_END_POINT } from "../../Utils/constant";
+import Toast from "../user/Toast";
 
 function AddItems() {
   const location = useLocation();
-  const { admin } = useSelector((state) => state.admin);
+  const disapatch = useDispatch();
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const [productData, setProductData] = useState({
+    productName: "",
+    description: "",
+    category: "Men",
+    subCategory: "Topware",
+    price: "",
+    images: [],
+    size: [],
+    bestSeller: false,
+  });
 
   const sizes = ["S", "M", "L", "XL", "XXL"];
   const [selectedIndex, setSelectedIndex] = useState([]);
@@ -25,17 +43,138 @@ function AddItems() {
   const [files, setFiles] = useState([null, null, null, null]); // Store images in an array
   const fileRefs = [useRef(null), useRef(null), useRef(null), useRef(null)]; // Use an array of refs
 
-  const handleFileChange = (index, event) => {
-    const newFiles = [...files];
-    newFiles[index] = event.target.files[0]
-      ? URL.createObjectURL(event.target.files[0])
-      : null;
-    setFiles(newFiles);
+  // Handle Normal Change
+  const handleChange = (e) => {
+    setProductData({ ...productData, [e.target.name]: e.target.value });
+    console.log(productData);
   };
 
+  // Handling category change
+  const handleCategory = (category) => {
+    setProductData({ ...productData, category });
+    console.log(productData);
+  };
+
+  // Handling sub-category change
+  const handleSubCategory = (subCategory) => {
+    setProductData({ ...productData, subCategory });
+    console.log(productData);
+  };
+
+  // Handling size selection/deselection
+  const handleSize = (size) => {
+    setProductData((prevData) => {
+      const newSize = prevData.size.includes(size)
+        ? prevData.size.filter((s) => s !== size)
+        : [...prevData.size, size];
+
+      return { ...prevData, size: newSize };
+    });
+  };
+  // Handling image file change
+  const handleFileChange = (index, event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      // Update files state (for displaying images)
+      const updatedFiles = [...files];
+      updatedFiles[index] = URL.createObjectURL(file); // Show preview
+      setFiles(updatedFiles);
+
+      // Update productData.images
+      const updatedImages = [...productData.images];
+      updatedImages[index] = file;
+      setProductData({ ...productData, images: updatedImages });
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+
+      if (productData.size.length === 0) {
+        setError("Select Size");
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
+
+        return;
+      }
+
+      if (productData.images.length === 0) {
+        setError("Select Image");
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("productName", productData.productName);
+      formData.append("description", productData.description);
+      formData.append("category", productData.category);
+      formData.append("subCategory", productData.subCategory);
+      formData.append("price", productData.price);
+      formData.append("size", JSON.stringify(productData.size));
+      formData.append("bestSeller", productData.bestSeller);
+      productData.images.forEach((image) => {
+        if (image) {
+          formData.append("images", image);
+        }
+      });
+
+      console.log("FormData content:");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+
+      const response = await axios.post(
+        `${PRODUCT_API_END_POINT}/add`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      disapatch(setAddProducs(response.data));
+
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 5000);
+      setProductData({
+        productName: "",
+        description: "",
+        category: "Men",
+        subCategory: "Topware",
+        price: "",
+        images: [],
+        size: [],
+        bestSeller: false,
+      });
+      setSelectedIndex([]);
+      setFiles([null, null, null, null]);
+      setLoading(false);
+
+      console.log("Product added:", response.data);
+    } catch (error) {
+      console.log(error);
+      setError(error.response?.data?.message || "Something went wrong");
+      console.log(error);
+      setLoading(false);
+    }
+  };
   return (
     <>
       <AdminHeader />
+      {success && <Toast message="Product added successfully" />}
+      {error && <Toast message={error} />}
       <div className="container  d-flex">
         <div
           className="d-flex flex-column flex-shrink-0  col-2 col-md-2 col-lg-3 flex-wrap"
@@ -106,7 +245,7 @@ function AddItems() {
         </div>
         <div className="d-flex col-10 col-md-10 col-lg-9 flex-wrap">
           <div className="mt-3 mt-md-0 p-1 p-md-4 ms-4 ms-md-5 col-12">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div>
                 <p style={{ color: "#4b5563", fontSize: "20px" }}>
                   Upload Image
@@ -143,8 +282,12 @@ function AddItems() {
               <div className="mt-3 col-11 col-lg-6">
                 <input
                   type="text"
+                  required
                   className="form-control"
                   placeholder="Type Here"
+                  name="productName"
+                  value={productData.productName}
+                  onChange={handleChange}
                 />
               </div>
               <div className="col-12 mt-3">
@@ -155,8 +298,12 @@ function AddItems() {
               <div className="mt-3 col-11 col-lg-6">
                 <textarea
                   type="text"
+                  required
                   className="form-control"
                   placeholder="Type Here"
+                  name="description"
+                  value={productData.description}
+                  onChange={handleChange}
                 />
               </div>
               <div className="d-flex flex-wrap col-11  mt-4 ">
@@ -172,21 +319,33 @@ function AddItems() {
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      Men
+                      {productData.category || "Men"}
                     </button>
                     <ul className="dropdown-menu">
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a
+                          className="dropdown-item"
+                          href="#"
+                          onClick={() => handleCategory("Men")}
+                        >
                           Men
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a
+                          className="dropdown-item"
+                          href="#"
+                          onClick={() => handleCategory("Women")}
+                        >
                           Women
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
+                        <a
+                          className="dropdown-item"
+                          href="#"
+                          onClick={() => handleCategory("Kids")}
+                        >
                           Kids
                         </a>
                       </li>
@@ -205,22 +364,34 @@ function AddItems() {
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      Topwear
+                      {productData.subCategory || "Topware"}
                     </button>
                     <ul className="dropdown-menu">
                       <li>
-                        <a className="dropdown-item" href="#">
-                          Topwear
+                        <a
+                          className="dropdown-item"
+                          href="#"
+                          onClick={() => handleSubCategory("Topware")}
+                        >
+                          Topware
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
-                          Bottomwear
+                        <a
+                          className="dropdown-item"
+                          href="#"
+                          onClick={() => handleSubCategory("Bottomware")}
+                        >
+                          Bottomware
                         </a>
                       </li>
                       <li>
-                        <a className="dropdown-item" href="#">
-                          Winterwear
+                        <a
+                          className="dropdown-item"
+                          href="# "
+                          onClick={() => handleSubCategory("Winterware")}
+                        >
+                          Winterware
                         </a>
                       </li>
                     </ul>
@@ -230,8 +401,12 @@ function AddItems() {
                   <p className="w-100 text-start">Product Price</p>
                   <input
                     type="text"
+                    required
                     className="form-control"
                     placeholder="25"
+                    name="price"
+                    value={productData.price}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -255,36 +430,49 @@ function AddItems() {
                         borderRadius: "0",
                         cursor: "pointer",
                       }}
-                      onClick={() => handleSizeClick(index)}
+                      onClick={() => {
+                        handleSizeClick(index);
+                        handleSize(size);
+                      }}
                     >
                       {size}
                     </p>
                   ))}
                 </div>
               </div>
-              <div class="form-check mt-2 ">
+              <div className="form-check mt-2 ">
                 <input
-                  class="form-check-input"
+                  className="form-check-input"
                   type="checkbox"
-                  value=""
+                  value={productData.bestSeller}
+                  name="bestSeller"
+                  onChange={(e) =>
+                    setProductData({
+                      ...productData,
+                      bestSeller: e.target.checked,
+                    })
+                  }
                   id="flexCheckDefault"
                 />
-                <label class="form-check-label" for="flexCheckDefault">
+                <label className="form-check-label" htmlFor="flexCheckDefault">
                   Add to BestSellers
                 </label>
               </div>
               <div className="mt-4 mb-4">
                 <button
                   type="submit"
+                  disabled={loading}
                   className="btn btn-dark text-white px-4 py-2 "
                   style={{ borderRadius: "0" }}
                 >
-                  ADD
+                  {loading ? "Loading..." : "Add Product"}
                 </button>
               </div>
             </form>
           </div>
         </div>
+        {success && <Toast message="Product added successfully" />}
+        {error && <Toast message={error} />}
       </div>
     </>
   );

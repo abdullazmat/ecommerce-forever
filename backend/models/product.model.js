@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema(
     },
 
     size: {
-      type: String,
+      type: [String],
       enum: ["S", "M", "L", "XL", "XXL"],
       required: true,
     },
@@ -25,7 +25,7 @@ const productSchema = new mongoose.Schema(
     subCategory: {
       type: String,
       required: true,
-      enum: ["Topware", "Bottomware", "Footware", "Winterwear"],
+      enum: ["Topware", "Bottomware", "Winterware"],
     },
 
     price: {
@@ -33,12 +33,16 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
 
-    image: [
+    images: [
       {
-        url: { type: String },
-        public_id: { type: String },
+        url: { type: String, required: true },
+        public_id: { type: String, required: true },
       },
     ],
+    bestSeller: {
+      type: Boolean,
+      default: false,
+    },
     reviews: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Reviews",
