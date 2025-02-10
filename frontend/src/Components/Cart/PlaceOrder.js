@@ -1,9 +1,99 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { assets } from "../../assets/frontend_assets/assets";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import axios from "axios";
+import { ORDER_API_END_POINT } from "../../Utils/constant";
+import { setOrder } from "../../Redux/orderSlice";
 
 function PlaceOrder() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { cart } = useSelector((state) => state.cart);
+  const [subTotal, setSubTotal] = useState(0);
+  const shippingFee = 10;
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    let total = 0;
+    cart.forEach((item) => {
+      total += item.price * item.quantity;
+    });
+    setSubTotal(total);
+  }, [cart]);
+
+  useEffect(() => {
+    setTotal(subTotal + shippingFee);
+  }, [subTotal]);
+
+  const [paymentMethod, setPaymentMethod] = useState("cod");
+  const [formData, setFormData] = useState({
+    fName: "",
+    lName: "",
+    email: "",
+    street: "",
+    city: "",
+    state: "",
+    zipcode: "",
+    country: "",
+    phone: "",
+    total: total,
+    status: "Order Placed",
+    paymethod: paymentMethod,
+    productinfo: cart.map((item) => ({
+      name: item.productName,
+      quantity: item.quantity,
+    })),
+  });
+
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      total: total,
+    }));
+  }, [total]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formObject = new FormData();
+      formObject.append("fName", formData.fName);
+      formObject.append("lName", formData.lName);
+      formObject.append("email", formData.email);
+      formObject.append("street", formData.street);
+      formObject.append("city", formData.city);
+      formObject.append("state", formData.state);
+      formObject.append("zipcode", formData.zipcode);
+      formObject.append("country", formData.country);
+      formObject.append("phone", formData.phone);
+      formObject.append("total", formData.total);
+      formObject.append("status", formData.status);
+      formObject.append("paymethod", formData.paymethod);
+      formObject.append("productinfo", JSON.stringify(formData.productinfo));
+
+      const response = await axios.post(
+        `${ORDER_API_END_POINT}/add`,
+        formObject,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response);
+      dispatch(setOrder(response.data.order));
+      navigate("/orders");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="container d-flex flex-wrap">
       <div className="p-0 p-md-2 p-lg-5 col-12 col-md-6 mt-5 mt-md-2">
@@ -13,15 +103,16 @@ function PlaceOrder() {
           </span>{" "}
           Information
         </h2>
-        <form>
+        <form type="submit">
           <div className="row mt-5">
             <div className="col-6">
               <div className="mb-3">
                 <input
                   type="text"
                   className="form-control"
-                  id="fname"
-                  name="fname"
+                  id="fName"
+                  name="fName"
+                  onChange={handleChange}
                   placeholder="First Name"
                 />
               </div>
@@ -31,9 +122,10 @@ function PlaceOrder() {
                 <input
                   type="text"
                   className="form-control"
-                  id="lname"
-                  name="lname"
+                  id="lName"
+                  name="lName"
                   placeholder="Last Name"
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -45,6 +137,7 @@ function PlaceOrder() {
                   id="email"
                   name="email"
                   placeholder="Email address"
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -56,6 +149,7 @@ function PlaceOrder() {
                   id="street"
                   name="street"
                   placeholder="Street"
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -67,6 +161,7 @@ function PlaceOrder() {
                   id="city"
                   name="city"
                   placeholder="City"
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -78,6 +173,7 @@ function PlaceOrder() {
                   id="state"
                   name="state"
                   placeholder="State"
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -89,6 +185,7 @@ function PlaceOrder() {
                   id="zipcode"
                   name="zipcode"
                   placeholder="Zip Code"
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -100,6 +197,7 @@ function PlaceOrder() {
                   id="country"
                   name="country"
                   placeholder="Country"
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -111,6 +209,7 @@ function PlaceOrder() {
                   id="phone"
                   name="phone"
                   placeholder="Phone Number"
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -125,15 +224,15 @@ function PlaceOrder() {
         </div>
         <div className="d-flex mt-4 mt-md-2 border-bottom">
           <h6>Subtotal</h6>
-          <h6 className="ms-auto">$ 100</h6>
+          <h6 className="ms-auto">$ {subTotal}</h6>
         </div>
         <div className="d-flex mt-2 border-bottom">
           <h6>Shipping Fee</h6>
-          <h6 className="ms-auto">$ 100</h6>
+          <h6 className="ms-auto">$ {shippingFee}</h6>
         </div>
         <div className="d-flex mt-2 ">
           <h6 className="fw-bold">Total</h6>
-          <h6 className="ms-auto">$ 200</h6>
+          <h6 className="ms-auto">$ {total}</h6>
         </div>
         <div className="mt-4">
           <p className="fw-bold fs-6">
@@ -142,7 +241,14 @@ function PlaceOrder() {
           <div className="d-flex justify-content-center flex-wrap mb-5">
             <div className="d-flex align-items-center  px-4 py-2 border col-12 col-md-4">
               <div>
-                <input type="radio" id="stripe" name="payment" value="stripe" />
+                <input
+                  type="radio"
+                  id="stripe"
+                  name="payment"
+                  value="stripe"
+                  checked={paymentMethod === "stripe"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
               </div>
               <div className="ms-4">
                 <img
@@ -159,6 +265,8 @@ function PlaceOrder() {
                   id="razorpay"
                   name="payment"
                   value="razorpay"
+                  checked={paymentMethod === "razorpay"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
                 />
               </div>
               <div className="ms-4">
@@ -171,7 +279,14 @@ function PlaceOrder() {
             </div>
             <div className="d-flex align-items-center  px-4 py-2 border col-12 col-md-4">
               <div>
-                <input type="radio" id="cod" name="payment" value="cod" />
+                <input
+                  type="radio"
+                  id="cod"
+                  name="payment"
+                  value="cod"
+                  checked={paymentMethod === "cod"}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
               </div>
               <div className="ms-4">
                 <img
@@ -185,10 +300,10 @@ function PlaceOrder() {
         </div>
         <div className="mt-2  d-flex justify-content-end ">
           <button
-            type="submit"
+            type=""
             className="btn btn-dark text-white w-100 w-md-50"
             style={{ borderRadius: "0" }}
-            onClick={() => navigate("/orders")}
+            onClick={handleSubmit}
           >
             Place Order
           </button>

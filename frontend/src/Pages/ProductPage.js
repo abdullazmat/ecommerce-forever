@@ -33,6 +33,7 @@ function ProductPage() {
     price: productData?.price,
     images: productData?.images,
     quantity: 1,
+    productId: productData?._id,
   });
 
   // Add Color to sizes selected
@@ -73,6 +74,7 @@ function ProductPage() {
       formData.append("size", JSON.stringify(cartData.size));
       formData.append("images", productData.images[0].url);
       formData.append("quantity", 1);
+      formData.append("productId", productData._id);
 
       console.log("FormData content:");
       for (let pair of formData.entries()) {
@@ -91,6 +93,7 @@ function ProductPage() {
         images: [],
         size: [],
         quantity: 1,
+        productId: "",
       });
       setSelectedIndex([]);
       setFormLoading(false);

@@ -3,8 +3,9 @@ import mongoose from "mongoose";
 
 export const addItem = async (req, res) => {
   try {
-    let { productName, size, price, images, quantity } = req.body;
-    console.log(req.body);
+    let { productName, size, price, images, quantity, productId } = req.body;
+
+    console.log(productId);
 
     // 🛑 Convert `size` from string to array (if necessary)
     if (typeof size === "string") {
@@ -18,7 +19,7 @@ export const addItem = async (req, res) => {
       }
     }
 
-    if (!productName || !size || !price || !images || !quantity) {
+    if (!productName || !size || !price || !images || !quantity || !productId) {
       return res.status(400).json({
         message: "All fields are required",
         success: false,
@@ -35,6 +36,7 @@ export const addItem = async (req, res) => {
       price,
       images,
       quantity,
+      productId,
     });
 
     return res.status(201).json({
@@ -50,7 +52,7 @@ export const addItem = async (req, res) => {
   }
 };
 
-// Get all products Controller
+// Get all Cart Items Controller
 export const getCartItems = async (req, res) => {
   try {
     const allcartItems = await Cart.find();
@@ -61,20 +63,12 @@ export const getCartItems = async (req, res) => {
   }
 };
 
-// Delete product Controller
+// Delete Cart Item Controller
 export const deleteCartItem = async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log(id);
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      console.log("object id not valid");
-    }
-
     const item = await Cart.findById(id);
-
-    console.log(item);
 
     if (!item) {
       return res.status(404).json({ message: "Item not found" });
@@ -83,6 +77,31 @@ export const deleteCartItem = async (req, res) => {
     await Cart.findByIdAndDelete(id);
 
     res.status(200).json({ message: "Item deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Update Cart Item Controller
+export const updateCartItem = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { quantity } = req.body;
+
+    if (!quantity) {
+      return res.status(400).json({ message: "Quantity is required" });
+    }
+
+    const item = await Cart.findById(id);
+    if (!item) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    item.quantity = quantity;
+
+    await item.save();
+
+    res.status(200).json({ message: "Item deleted successfully", item });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -119,7 +119,7 @@ function OrderedItems() {
               {/* Product Details */}
               <div className="col-12 col-md-5 col-lg-4">
                 <p className="mb-2 mb-md-1">
-                  Men Slim Fit Relaxed Denim Jacket x 3 XL <span>M</span>
+                  Men Slim Fit Relaxed Denim Jacket x 3 XL
                 </p>
                 <p className="mb-2 mb-md-1">
                   <span className="fw-medium">Customer:</span> {"John Doe"}

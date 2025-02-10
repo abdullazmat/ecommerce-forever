@@ -8,9 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { CART_API_END_POINT } from "../../Utils/constant";
 import { setAllCartItems } from "../../Redux/cartSlice";
 import useGetAllCartItems from "../../Hooks/useGetCartItems";
+import { useEffect } from "react";
 
 function CartItems({ item }) {
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(item?.quantity);
   const { cart } = useSelector((state) => state.cart);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
@@ -35,6 +36,29 @@ function CartItems({ item }) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const updateItem = async () => {
+      try {
+        const response = await axios.put(
+          `${CART_API_END_POINT}/update/${item._id}`,
+          {
+            quantity: count,
+          }
+        );
+
+        // Get the updated cart items from the API
+        const { data } = await axios.get(`${CART_API_END_POINT}/get`);
+
+        // Dispatch the updated cart to Redux
+        dispatch(setAllCartItems(data.allcartItems));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    updateItem();
+  }, [count, dispatch, item._id]);
 
   return (
     <div className="border-top border-bottom d-flex">
