@@ -13,7 +13,7 @@ const useGetAllCartItems = (cartLength) => {
         const res = await axios.get(`${CART_API_END_POINT}/get`, {});
 
         dispatch(setAllCartItems(res.data.allcartItems));
-        console.log("Hook Called");
+        console.log("Cart Hook Called");
       } catch (err) {
         console.log(err);
       }

@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { ORDER_API_END_POINT } from "../../Utils/constant";
 import { setOrder } from "../../Redux/orderSlice";
+import useDeleteAllCart from "../../Hooks/useDeleteAllCart";
 
 function PlaceOrder() {
   const navigate = useNavigate();
@@ -23,6 +24,8 @@ function PlaceOrder() {
     });
     setSubTotal(total);
   }, [cart]);
+
+  const deleteAllCart = useDeleteAllCart();
 
   useEffect(() => {
     setTotal(subTotal + shippingFee);
@@ -45,6 +48,7 @@ function PlaceOrder() {
     productinfo: cart.map((item) => ({
       name: item.productName,
       quantity: item.quantity,
+      size: item.size[0],
     })),
   });
 
@@ -88,6 +92,7 @@ function PlaceOrder() {
       );
       console.log(response);
       dispatch(setOrder(response.data.order));
+      await deleteAllCart();
       navigate("/orders");
     } catch (error) {
       console.log(error);
@@ -103,7 +108,7 @@ function PlaceOrder() {
           </span>{" "}
           Information
         </h2>
-        <form type="submit">
+        <form id="orderForm" onSubmit={handleSubmit}>
           <div className="row mt-5">
             <div className="col-6">
               <div className="mb-3">
@@ -112,6 +117,7 @@ function PlaceOrder() {
                   className="form-control"
                   id="fName"
                   name="fName"
+                  required
                   onChange={handleChange}
                   placeholder="First Name"
                 />
@@ -124,6 +130,7 @@ function PlaceOrder() {
                   className="form-control"
                   id="lName"
                   name="lName"
+                  required
                   placeholder="Last Name"
                   onChange={handleChange}
                 />
@@ -136,6 +143,7 @@ function PlaceOrder() {
                   className="form-control"
                   id="email"
                   name="email"
+                  required
                   placeholder="Email address"
                   onChange={handleChange}
                 />
@@ -148,6 +156,7 @@ function PlaceOrder() {
                   className="form-control"
                   id="street"
                   name="street"
+                  required
                   placeholder="Street"
                   onChange={handleChange}
                 />
@@ -160,6 +169,7 @@ function PlaceOrder() {
                   className="form-control"
                   id="city"
                   name="city"
+                  required
                   placeholder="City"
                   onChange={handleChange}
                 />
@@ -171,6 +181,7 @@ function PlaceOrder() {
                   type="text"
                   className="form-control"
                   id="state"
+                  required
                   name="state"
                   placeholder="State"
                   onChange={handleChange}
@@ -183,6 +194,7 @@ function PlaceOrder() {
                   type="number"
                   className="form-control"
                   id="zipcode"
+                  required
                   name="zipcode"
                   placeholder="Zip Code"
                   onChange={handleChange}
@@ -195,6 +207,7 @@ function PlaceOrder() {
                   type="text"
                   className="form-control"
                   id="country"
+                  required
                   name="country"
                   placeholder="Country"
                   onChange={handleChange}
@@ -208,6 +221,7 @@ function PlaceOrder() {
                   className="form-control"
                   id="phone"
                   name="phone"
+                  required
                   placeholder="Phone Number"
                   onChange={handleChange}
                 />
@@ -300,10 +314,10 @@ function PlaceOrder() {
         </div>
         <div className="mt-2  d-flex justify-content-end ">
           <button
-            type=""
+            form="orderForm"
+            type="submit"
             className="btn btn-dark text-white w-100 w-md-50"
             style={{ borderRadius: "0" }}
-            onClick={handleSubmit}
           >
             Place Order
           </button>

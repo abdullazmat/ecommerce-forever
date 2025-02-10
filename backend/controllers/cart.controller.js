@@ -106,3 +106,16 @@ export const updateCartItem = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Delete All Cart Items Controller
+export const deleteAllCartItem = async (req, res) => {
+  try {
+    await Cart.deleteMany();
+    const cart = await Cart.find();
+    console.log(cart);
+
+    res.status(200).json({ message: "All items deleted successfully", cart });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
