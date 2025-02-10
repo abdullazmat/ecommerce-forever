@@ -38,20 +38,15 @@ function ProductPage() {
   // Add Color to sizes selected
   const [selectedIndex, setSelectedIndex] = useState([]);
   const handleSizeClick = (index) => {
-    setSelectedIndex((prev) =>
-      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
-    );
+    setSelectedIndex([index]); // Only one selected index at a time
   };
 
   // Handling size Form Data selection/deselection
   const handleSize = (size) => {
-    setCartData((prevData) => {
-      const newSize = prevData.size.includes(size)
-        ? prevData.size.filter((s) => s !== size)
-        : [...prevData.size, size];
-
-      return { ...prevData, size: newSize };
-    });
+    setCartData((prevData) => ({
+      ...prevData,
+      size: [size],
+    }));
   };
 
   const handleSubmit = async (e) => {

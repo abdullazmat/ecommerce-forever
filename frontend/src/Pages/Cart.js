@@ -1,10 +1,12 @@
 import React from "react";
 import CartItems from "../Components/Cart/CartItems";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Cart() {
   const navigate = useNavigate();
-  const cartarray = [1, 2, 3, 4];
+
+  const { cart } = useSelector((state) => state.cart);
 
   return (
     <div className="container">
@@ -13,9 +15,15 @@ function Cart() {
           <span style={{ color: "#6b7280" }}>YOUR</span> CART
         </h2>
       </div>
-      {cartarray.map((item) => {
-        return <CartItems key={item} />;
-      })}
+      {cart.length === 0 ? (
+        <div className="d-flex justify-content-center align-items-center mt-3 mb-5">
+          <h3 className="text-danger">Your cart is empty</h3>
+        </div>
+      ) : (
+        cart.map((item) => {
+          return <CartItems item={item} key={item?._id} />;
+        })
+      )}
       <div className="row justify-content-end">
         <div className="col-12 col-md-6 col-lg-5 p-5 d-flex justify-content-center flex-column">
           <div>

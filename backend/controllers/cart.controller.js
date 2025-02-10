@@ -1,4 +1,5 @@
 import { Cart } from "../models/cart.model.js";
+import mongoose from "mongoose";
 
 export const addItem = async (req, res) => {
   try {
@@ -55,6 +56,33 @@ export const getCartItems = async (req, res) => {
     const allcartItems = await Cart.find();
 
     res.status(200).json({ allcartItems, success: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Delete product Controller
+export const deleteCartItem = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    console.log(id);
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      console.log("object id not valid");
+    }
+
+    const item = await Cart.findById(id);
+
+    console.log(item);
+
+    if (!item) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    await Cart.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "Item deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

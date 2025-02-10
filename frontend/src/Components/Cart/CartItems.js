@@ -3,12 +3,37 @@ import { assets } from "../../assets/frontend_assets/assets";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { CART_API_END_POINT } from "../../Utils/constant";
+import { setAllCartItems } from "../../Redux/cartSlice";
+import useGetAllCartItems from "../../Hooks/useGetCartItems";
 
-function CartItems() {
+function CartItems({ item }) {
   const [count, setCount] = useState(1);
+  const { cart } = useSelector((state) => state.cart);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+
+  useGetAllCartItems(cart.length);
 
   const handleChange = (e) => {
     setCount(Number(e.target.value));
+  };
+
+  const deleteItem = async (id) => {
+    try {
+      await axios.delete(`${CART_API_END_POINT}/delete/${id}`);
+      const updatedItems = cart.filter((item) => item._id !== id);
+      dispatch(setAllCartItems(updatedItems));
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -16,7 +41,7 @@ function CartItems() {
       <div className="d-flex w-50">
         <div className="d-flex align-items-center">
           <img
-            src={assets.p_img2_1}
+            src={item?.images}
             style={{ width: "70px" }}
             alt="product"
             className="img-fluid"
@@ -27,9 +52,9 @@ function CartItems() {
           <div className="ms-0 ms-md-3">
             <h5 className="fs-cartitem">Kid Tapered Slim Fit Trouser</h5>
             <div className="d-flex align-items-center ">
-              <p>$100</p>
+              <p>${item?.price}</p>
               <p
-                className="px-3 ms-3"
+                className="px-3 ms-4"
                 style={{
                   backgroundColor: "#374151",
                   opacity: "0.6",
@@ -37,7 +62,7 @@ function CartItems() {
                   borderRadius: "0",
                 }}
               >
-                XL
+                {item?.size[0]}
               </p>
             </div>
           </div>
@@ -62,7 +87,12 @@ function CartItems() {
           />
         </div>
         <div className="d-flex align-items-center justify-content-center ms-3 ms-md-0">
-          <FontAwesomeIcon icon={faTrashCan} className="fa-lg" />
+          <FontAwesomeIcon
+            icon={faTrashCan}
+            className="fa-lg text-danger"
+            onClick={() => deleteItem(item?._id)}
+            style={{ cursor: "pointer" }}
+          />
         </div>
       </div>
     </div>
