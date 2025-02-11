@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-function OrderItems() {
+function OrderItems({ product, paymethod, createdAt, status }) {
   const [count, setCount] = useState(1);
 
   const handleChange = (e) => {
@@ -16,7 +16,7 @@ function OrderItems() {
       <div className="d-flex flex-wrap col-12 col-md-6">
         <div className="d-flex align-items-center col-3  ">
           <img
-            src={assets.p_img2_1}
+            src={product?.image}
             style={{ width: "70px" }}
             alt="product"
             className="img-fluid"
@@ -25,21 +25,21 @@ function OrderItems() {
 
         <div className="d-flex flex-column py-2 col-9 justify-content-start">
           <div className="">
-            <h5 className="fs-orderitem col-12">
-              Kid Tapered Slim Fit Trouser
-            </h5>
+            <h5 className="fs-orderitem col-12">{product?.name}</h5>
             <div className="d-flex align-items-center  ">
-              <p className="fs-orderitem">$100</p>
-              <p className="px-3 fs-orderitem">Quantity : {2}</p>
-              <p className="px-3 fs-orderitem ">Size : {"M"}</p>
+              <p className="fs-orderitem">${product?.price}</p>
+              <p className="px-3 fs-orderitem">
+                Quantity : {product?.quantity}
+              </p>
+              <p className="px-3 fs-orderitem ">Size : {product?.size}</p>
             </div>
             <div className="d-flex align-items-center ">
               <p className="fw-bold fs-orderitem">Date:</p>
-              <p className="px-3 fs-orderitem ">{"5 Feb 2025"}</p>
+              <p className="px-3 fs-orderitem ">{createdAt}</p>
             </div>
             <div className="d-flex align-items-center ">
               <p className="fw-bold fs-orderitem">Payment:</p>
-              <p className="px-3 fs-orderitem ">{"COD"}</p>
+              <p className="px-3 fs-orderitem ">{paymethod.toUpperCase()}</p>
             </div>
           </div>
         </div>
@@ -50,7 +50,7 @@ function OrderItems() {
             className="rounded-circle bg-success"
             style={{ width: "10px", height: "10px" }}
           ></p>
-          <p className=" ms-3 ms-md-2">Order Placed</p>
+          <p className=" ms-3 ms-md-2">{status}</p>
         </div>
         <div className="d-flex col-6 align-items-center justify-content-center ">
           <p className="px-3 py-2 border " style={{ fontWeight: "400" }}>

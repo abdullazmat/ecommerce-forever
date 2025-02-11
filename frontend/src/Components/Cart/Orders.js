@@ -1,8 +1,12 @@
 import React from "react";
 import OrderItems from "./OrderItems";
+import { useSelector } from "react-redux";
+import useGetAllOrders from "../../Hooks/useGetAllOrders";
 
 function Orders() {
-  const orderarr = [1, 2, 3, 4];
+  useGetAllOrders();
+  const { allOrders } = useSelector((state) => state.order);
+
   return (
     <div className="container">
       <div className="p-5">
@@ -10,9 +14,17 @@ function Orders() {
           <span style={{ color: "#6b7280" }}>MY</span> ORDERS
         </h2>
       </div>
-      {orderarr.map((item) => {
-        return <OrderItems key={item} />;
-      })}
+      {allOrders?.flatMap((order) =>
+        order.productinfo?.map((product) => (
+          <OrderItems
+            key={product._id}
+            product={product}
+            paymethod={order.paymethod}
+            createdAt={order.createdAt.split("T")[0]}
+            status={order.status}
+          />
+        ))
+      )}
     </div>
   );
 }

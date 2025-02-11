@@ -7,13 +7,14 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
 import { ORDER_API_END_POINT } from "../../Utils/constant";
-import { setOrder } from "../../Redux/orderSlice";
+import { addOrder } from "../../Redux/orderSlice";
 import useDeleteAllCart from "../../Hooks/useDeleteAllCart";
 
 function PlaceOrder() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
+  const orders = useSelector((state) => state.order.orders) || [];
   const [subTotal, setSubTotal] = useState(0);
   const shippingFee = 10;
   const [total, setTotal] = useState(0);
@@ -49,6 +50,8 @@ function PlaceOrder() {
       name: item.productName,
       quantity: item.quantity,
       size: item.size[0],
+      price: item.price,
+      image: item.images,
     })),
   });
 
@@ -90,8 +93,8 @@ function PlaceOrder() {
           },
         }
       );
-      console.log(response);
-      dispatch(setOrder(response.data.order));
+      console.log(response.data.order);
+      dispatch(addOrder([...orders, response.data.order]));
       await deleteAllCart();
       navigate("/orders");
     } catch (error) {

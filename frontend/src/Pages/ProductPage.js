@@ -26,12 +26,13 @@ function ProductPage() {
   useGetProductData({ id, setLoading });
 
   const { productData } = useSelector((state) => state.product);
+  console.log("Product Data:", productData);
   const { allCartItems } = useSelector((state) => state.cart);
   const [cartData, setCartData] = useState({
     productName: productData?.productName,
     size: [],
     price: productData?.price,
-    images: productData?.images,
+    images: productData?.images[0]?.url,
     quantity: 1,
     productId: productData?._id,
   });

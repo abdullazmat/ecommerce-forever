@@ -11,6 +11,7 @@ import useGetAllCartItems from "../../Hooks/useGetCartItems";
 import { useEffect } from "react";
 
 function CartItems({ item }) {
+  console.log(item);
   const [count, setCount] = useState(item?.quantity);
   const { cart } = useSelector((state) => state.cart);
   const [success, setSuccess] = useState(false);
@@ -86,7 +87,7 @@ function CartItems({ item }) {
                   borderRadius: "0",
                 }}
               >
-                {item?.size[0]}
+                {item?.size}
               </p>
             </div>
           </div>
