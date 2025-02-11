@@ -9,24 +9,14 @@ import {
 import AdminHeader from "./AdminHeader";
 import { Link } from "react-router-dom";
 import { assets } from "../../assets/admin_assets/assets";
+import { useSelector } from "react-redux";
+import useGetAllOrders from "../../Hooks/useGetAllOrders";
 
 function OrderedItems() {
-  const jobApplications = [
-    {
-      _id: "1",
-      image: assets.p_img2_1,
-      name: "Kid Tapered Slim Fit Trouser",
-      category: "Kids",
-      price: 500,
-    },
-    {
-      _id: "2",
-      image: assets.p_img2_2,
-      name: "Kid Tapered Slim Fit Trouser",
-      category: "Kids",
-      price: 500,
-    },
-  ];
+  useGetAllOrders();
+  const { allOrders } = useSelector((state) => state.order);
+  console.log("allOrders", allOrders);
+
   return (
     <>
       <AdminHeader />
@@ -105,70 +95,89 @@ function OrderedItems() {
           <div className="container-fluid p-4">
             <h4 className="text-start ">Order List</h4>
             {/* Each order/item row */}
-            <div className="row align-items-start border border-2 border-gray-200 px-1 py-3 p-md-1 my-3 my-md-4 text-gray-700">
-              {/* Parcel Icon – hidden on XS and SM */}
-              <div className="d-none d-lg-flex col-12 col-md-1 col-lg-1 justify-content-center">
-                <img
-                  src={assets.parcel_icon}
-                  className="img-fluid"
-                  alt="product"
-                  style={{ maxWidth: "50px" }}
-                />
-              </div>
+            {allOrders.map((order) => (
+              <div
+                key={order?._id}
+                className="row align-items-start border border-2 border-gray-200 px-1 py-3 p-md-1 my-3 my-md-4 text-gray-700"
+              >
+                {/* Parcel Icon – hidden on XS and SM */}
+                <div className="d-none d-lg-flex col-12 col-md-1 col-lg-1 justify-content-center">
+                  <img
+                    src={assets.parcel_icon}
+                    className="img-fluid"
+                    alt="product"
+                    style={{ maxWidth: "50px" }}
+                  />
+                </div>
 
-              {/* Product Details */}
-              <div className="col-12 col-md-5 col-lg-4">
-                <p className="mb-2 mb-md-1">
-                  Men Slim Fit Relaxed Denim Jacket x 3 XL
-                </p>
-                <p className="mb-2 mb-md-1">
-                  <span className="fw-medium">Customer:</span> {"John Doe"}
-                </p>
-                <p className=" mb-2 mb-md-1">
-                  <span className="fw-medium">Street: </span>
-                  {"Qtr No 27G/253 Gadwal "}
-                </p>
-                <p className=" mb-2 mb-md-1">
-                  <span className="fw-medium">Address: </span>
-                  {"Wah Cantt Pakistan 47010 "}
-                </p>
-              </div>
+                {/* Product Details */}
+                <div className="col-12 col-md-5 col-lg-4">
+                  {order?.productinfo?.map((product) => (
+                    <p className="mb-2 mb-md-1">
+                      {product?.name} x {product?.quantity} {product?.size}
+                    </p>
+                  ))}
 
-              {/* Order Summary */}
-              <div className="col-12 col-md-3 col-lg-3 d-flex flex-column">
-                <p className="mb-2 mb-md-1">
-                  <span className="fw-medium">Items:</span> {3}
-                </p>
-                <p className="mb-2 mb-md-1">
-                  <span className="fw-medium">Method:</span> {"COD"}
-                </p>
-                <p className="mb-2 mb-md-1">
-                  <span className="fw-medium">Payment:</span> {"Pending"}
-                </p>
-                <p className="mb-2 mb-md-1">
-                  <span className="fw-medium">Date:</span> {"2/6/2025"}
-                </p>
-                <p className="mb-2 mb-md-1">
-                  <span className="fw-medium">Phone:</span> {"03175184327"}
-                </p>
-              </div>
+                  <p className="mb-2 mb-md-1">
+                    <span className="fw-medium">Customer:</span> {order?.fName}{" "}
+                    {""}
+                    {order?.lName}
+                  </p>
+                  <p className=" mb-2 mb-md-1">
+                    <span className="fw-medium">Street: </span>
+                    {order?.street}
+                  </p>
+                  <p className=" mb-2 mb-md-1">
+                    <span className="fw-medium">Address: </span>
+                    {order?.city}, {order?.state}, {order?.country} ,
+                    {order?.zipcode}
+                  </p>
+                </div>
 
-              {/* Price */}
-              <div className="col-12 col-md-1 col-lg-1 mt-2 d-flex align-items-center justify-content-start">
-                <p className="fw-bold mb-0">$48</p>
-              </div>
+                {/* Order Summary */}
+                <div className="col-12 col-md-3 col-lg-3 d-flex flex-column">
+                  <p className="mb-2 mb-md-1">
+                    <span className="fw-medium">Items:</span>{" "}
+                    {order?.productinfo?.length}
+                  </p>
+                  <p className="mb-2 mb-md-1">
+                    <span className="fw-medium">Method:</span>{" "}
+                    {order?.paymethod.toUpperCase()}
+                  </p>
+                  <p className="mb-2 mb-md-1">
+                    <span className="fw-medium">Payment:</span>{" "}
+                    {order?.payment || "Pending"}
+                  </p>
+                  <p className="mb-2 mb-md-1">
+                    <span className="fw-medium">Date:</span>{" "}
+                    {order?.createdAt.split("T")[0]}
+                  </p>
+                  <p className="mb-2 mb-md-1">
+                    <span className="fw-medium">Phone:</span> {order?.phone}
+                  </p>
+                </div>
 
-              {/* Order Status Dropdown */}
-              <div className="col-9 col-sm-6 col-md-3 col-lg-3 d-flex align-items-center justify-content-center mt-2">
-                <select className="form-select " style={{ fontSize: "0.8rem" }}>
-                  <option value="Order Placed">Placed for Order</option>
-                  <option value="Packing">Packing</option>
-                  <option value="Shipped">Shipped</option>
-                  <option value="Out for delivery">Out for delivery</option>
-                  <option value="Delivered">Delivered</option>
-                </select>
+                {/* Price */}
+                <div className="col-12 col-md-1 col-lg-1 mt-2 d-flex align-items-center justify-content-start">
+                  <p className="fw-bold mb-0">${order?.total}</p>
+                </div>
+
+                {/* Order Status Dropdown */}
+                <div className="col-9 col-sm-6 col-md-3 col-lg-3 d-flex align-items-center justify-content-center mt-2">
+                  <select
+                    className="form-select "
+                    style={{ fontSize: "0.8rem" }}
+                  >
+                    <option value="Order Placed">Placed for Order</option>
+                    <option value="Packing">Packing</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Out for delivery">Out for delivery</option>
+                    <option value="Delivered">Delivered</option>
+                  </select>
+                </div>
               </div>
-            </div>
+            ))}
+
             {/* You can map over jobApplications here if needed */}
           </div>
         </div>

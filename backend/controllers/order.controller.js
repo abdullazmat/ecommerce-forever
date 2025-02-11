@@ -28,6 +28,7 @@ export const addOrder = async (req, res) => {
       status,
       paymethod,
       total,
+      payment,
     } = req.body;
 
     // Validate required fields
@@ -43,6 +44,7 @@ export const addOrder = async (req, res) => {
       !country ||
       !status ||
       !paymethod ||
+      !payment ||
       !productinfo ||
       !Array.isArray(productinfo) || // Ensure productinfo is an array
       productinfo.length === 0 || // Ensure it has at least one product
@@ -66,6 +68,7 @@ export const addOrder = async (req, res) => {
       zipcode,
       country,
       status,
+      payment,
       paymethod,
       total,
     });

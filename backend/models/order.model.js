@@ -75,6 +75,11 @@ const orderSchema = new mongoose.Schema(
         "Delivered",
       ],
     },
+    payment: {
+      type: String,
+      enum: ["Pending", "Completed"],
+      required: true,
+    },
     paymethod: {
       type: String,
       enum: ["cod", "stripe", "razorpay"],

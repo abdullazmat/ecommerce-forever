@@ -15,6 +15,7 @@ function PlaceOrder() {
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
   const orders = useSelector((state) => state.order.orders) || [];
+  const [paymentStatus, setPaymentStatus] = useState("Pending");
   const [subTotal, setSubTotal] = useState(0);
   const shippingFee = 10;
   const [total, setTotal] = useState(0);
@@ -33,6 +34,15 @@ function PlaceOrder() {
   }, [subTotal]);
 
   const [paymentMethod, setPaymentMethod] = useState("cod");
+
+  useEffect(() => {
+    if (paymentMethod === "stripe" || paymentMethod === "razorpay") {
+      setPaymentStatus("Completed");
+    } else {
+      setPaymentStatus("Pending");
+    }
+  }, [paymentMethod]);
+
   const [formData, setFormData] = useState({
     fName: "",
     lName: "",
@@ -46,6 +56,7 @@ function PlaceOrder() {
     total: total,
     status: "Order Placed",
     paymethod: paymentMethod,
+    payment: "Pending",
     productinfo: cart.map((item) => ({
       name: item.productName,
       quantity: item.quantity,
@@ -82,6 +93,7 @@ function PlaceOrder() {
       formObject.append("total", formData.total);
       formObject.append("status", formData.status);
       formObject.append("paymethod", formData.paymethod);
+      formObject.append("payment", formData.payment);
       formObject.append("productinfo", JSON.stringify(formData.productinfo));
 
       const response = await axios.post(
