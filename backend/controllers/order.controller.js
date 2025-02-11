@@ -86,10 +86,40 @@ export const getAllOrders = async (req, res) => {
   try {
     const allOrders = await Order.find();
 
-    console.log("All Orders controller", allOrders);
-
     res.status(200).json({ allOrders, success: true });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+// Update Order Status Controller
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    console.log(id, status);
+
+    if (!status) {
+      return res.status(400).json({ message: "Status is required" });
+    }
+
+    const order = await Order.findById(id);
+    console.log(order);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    order.status = status;
+    await order.save();
+
+    console.log("Order status updated:", order);
+    res.status(200).json({ message: "Order status updated", success: true });
+  } catch (error) {
+    console.error("Error in updateOrderStatus:", error);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
   }
 };

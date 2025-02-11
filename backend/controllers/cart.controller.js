@@ -5,8 +5,6 @@ export const addItem = async (req, res) => {
   try {
     let { productName, size, price, images, quantity, productId } = req.body;
 
-    console.log(productId);
-
     // 🛑 Convert `size` from string to array (if necessary)
     if (typeof size === "string") {
       try {
@@ -112,7 +110,6 @@ export const deleteAllCartItem = async (req, res) => {
   try {
     await Cart.deleteMany();
     const cart = await Cart.find();
-    console.log(cart);
 
     res.status(200).json({ message: "All items deleted successfully", cart });
   } catch (error) {

@@ -13,8 +13,16 @@ const orderSlice = createSlice({
     setGetAllOrders: (state, action) => {
       state.allOrders = action.payload;
     },
+    setUpdatedOrder: (state, action) => {
+      state.allOrders = state.allOrders.map((order) =>
+        order._id === action.payload._id
+          ? { ...order, status: action.payload.status }
+          : order
+      );
+    },
   },
 });
 
-export const { addOrder, setGetAllOrders } = orderSlice.actions;
+export const { addOrder, setGetAllOrders, setUpdatedOrder } =
+  orderSlice.actions;
 export default orderSlice.reducer;

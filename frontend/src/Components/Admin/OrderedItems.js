@@ -1,21 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCirclePlus,
   faList,
   faBagShopping,
-  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import AdminHeader from "./AdminHeader";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { assets } from "../../assets/admin_assets/assets";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import useGetAllOrders from "../../Hooks/useGetAllOrders";
+import { setUpdatedOrder } from "../../Redux/orderSlice";
+import axios from "axios";
+import { ORDER_API_END_POINT } from "../../Utils/constant";
 
 function OrderedItems() {
+  const location = useLocation();
+  const dispatch = useDispatch();
+
   useGetAllOrders();
   const { allOrders } = useSelector((state) => state.order);
-  console.log("allOrders", allOrders);
+
+  const handleStatusChange = async (e, orderId) => {
+    const newStatus = e.target.value;
+
+    // Update Redux State First
+    dispatch(setUpdatedOrder({ _id: orderId, status: newStatus }));
+
+    try {
+      // Update Backend
+      await axios.put(`${ORDER_API_END_POINT}/update/${orderId}`, {
+        status: newStatus,
+      });
+      console.log("Order Status Updated Successfully");
+    } catch (error) {
+      console.error("Failed to update Order Status", error);
+    }
+  };
 
   return (
     <>
@@ -41,9 +62,8 @@ function OrderedItems() {
                 className="fa-lg ms-0 ms-md-3"
               />
               <Link
-                to={"/admin-panel/add"}
+                to="/admin-panel/add"
                 className="nav-link text-black d-none d-md-inline"
-                aria-current="page"
               >
                 Add Items
               </Link>
@@ -59,9 +79,8 @@ function OrderedItems() {
             >
               <FontAwesomeIcon icon={faList} className="fa-lg ms-0 ms-md-3" />
               <Link
-                to={"/admin-panel/list"}
+                to="/admin-panel/list"
                 className="nav-link text-black d-none d-md-inline"
-                aria-current="page"
               >
                 List Items
               </Link>
@@ -80,9 +99,8 @@ function OrderedItems() {
                 className="fa-lg ms-0 ms-md-3"
               />
               <Link
-                to={"/admin-panel/orders"}
+                to="/admin-panel/orders"
                 className="nav-link text-black d-none d-md-inline"
-                aria-current="page"
               >
                 Order List
               </Link>
@@ -94,13 +112,13 @@ function OrderedItems() {
         <div className="d-flex col-10 col-md-10 col-lg-9 flex-wrap">
           <div className="container-fluid p-4">
             <h4 className="text-start ">Order List</h4>
-            {/* Each order/item row */}
+            {/* Orders List */}
             {allOrders.map((order) => (
               <div
                 key={order?._id}
                 className="row align-items-start border border-2 border-gray-200 px-1 py-3 p-md-1 my-3 my-md-4 text-gray-700"
               >
-                {/* Parcel Icon – hidden on XS and SM */}
+                {/* Product Image */}
                 <div className="d-none d-lg-flex col-12 col-md-1 col-lg-1 justify-content-center">
                   <img
                     src={assets.parcel_icon}
@@ -110,27 +128,23 @@ function OrderedItems() {
                   />
                 </div>
 
-                {/* Product Details */}
+                {/* Order Details */}
                 <div className="col-12 col-md-5 col-lg-4">
-                  {order?.productinfo?.map((product) => (
-                    <p className="mb-2 mb-md-1">
+                  {order?.productinfo?.map((product, index) => (
+                    <p key={index} className="mb-2 mb-md-1">
                       {product?.name} x {product?.quantity} {product?.size}
                     </p>
                   ))}
-
                   <p className="mb-2 mb-md-1">
                     <span className="fw-medium">Customer:</span> {order?.fName}{" "}
-                    {""}
                     {order?.lName}
                   </p>
-                  <p className=" mb-2 mb-md-1">
-                    <span className="fw-medium">Street: </span>
-                    {order?.street}
+                  <p className="mb-2 mb-md-1">
+                    <span className="fw-medium">Street:</span> {order?.street}
                   </p>
-                  <p className=" mb-2 mb-md-1">
-                    <span className="fw-medium">Address: </span>
-                    {order?.city}, {order?.state}, {order?.country} ,
-                    {order?.zipcode}
+                  <p className="mb-2 mb-md-1">
+                    <span className="fw-medium">Address:</span> {order?.city},{" "}
+                    {order?.state}, {order?.country}, {order?.zipcode}
                   </p>
                 </div>
 
@@ -158,27 +172,27 @@ function OrderedItems() {
                 </div>
 
                 {/* Price */}
-                <div className="col-12 col-md-1 col-lg-1 mt-2 d-flex align-items-center justify-content-start">
+                <div className="col-12 col-md-1 col-lg-1 mt-2 d-flex align-items-center">
                   <p className="fw-bold mb-0">${order?.total}</p>
                 </div>
 
                 {/* Order Status Dropdown */}
-                <div className="col-9 col-sm-6 col-md-3 col-lg-3 d-flex align-items-center justify-content-center mt-2">
+                <div className="col-9 col-sm-6 col-md-3 col-lg-3 d-flex align-items-center mt-2">
                   <select
-                    className="form-select "
+                    className="form-select"
                     style={{ fontSize: "0.8rem" }}
+                    onChange={(e) => handleStatusChange(e, order?._id)}
+                    value={order?.status || "Placed For Order"}
                   >
-                    <option value="Order Placed">Placed for Order</option>
+                    <option value="Order Placed">Placed For Order</option>
                     <option value="Packing">Packing</option>
                     <option value="Shipped">Shipped</option>
-                    <option value="Out for delivery">Out for delivery</option>
+                    <option value="Out for Delivery">Out for delivery</option>
                     <option value="Delivered">Delivered</option>
                   </select>
                 </div>
               </div>
             ))}
-
-            {/* You can map over jobApplications here if needed */}
           </div>
         </div>
       </div>

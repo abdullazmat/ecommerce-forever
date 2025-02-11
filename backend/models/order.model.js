@@ -71,14 +71,13 @@ const orderSchema = new mongoose.Schema(
         "Order Placed",
         "Packing",
         "Shipped",
-        "Out For Delivery",
+        "Out for Delivery",
         "Delivered",
       ],
     },
     payment: {
       type: String,
       enum: ["Pending", "Completed"],
-      required: true,
     },
     paymethod: {
       type: String,
