@@ -14,7 +14,6 @@ const useGetProductData = ({ id, setLoading }) => {
         const res = await axios.get(`${PRODUCT_API_END_POINT}/get/${id}`, {});
 
         dispatch(setProductData(res.data.product));
-        console.log("Hook Called");
         setLoading(false);
       } catch (err) {
         console.log(err);

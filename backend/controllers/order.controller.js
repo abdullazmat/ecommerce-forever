@@ -98,14 +98,11 @@ export const updateOrderStatus = async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    console.log(id, status);
-
     if (!status) {
       return res.status(400).json({ message: "Status is required" });
     }
 
     const order = await Order.findById(id);
-    console.log(order);
 
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
@@ -114,7 +111,6 @@ export const updateOrderStatus = async (req, res) => {
     order.status = status;
     await order.save();
 
-    console.log("Order status updated:", order);
     res.status(200).json({ message: "Order status updated", success: true });
   } catch (error) {
     console.error("Error in updateOrderStatus:", error);

@@ -32,7 +32,6 @@ function OrderedItems() {
       await axios.put(`${ORDER_API_END_POINT}/update/${orderId}`, {
         status: newStatus,
       });
-      console.log("Order Status Updated Successfully");
     } catch (error) {
       console.error("Failed to update Order Status", error);
     }

@@ -13,7 +13,6 @@ const useGetAllOrders = () => {
         const res = await axios.get(`${ORDER_API_END_POINT}/get`, {});
 
         dispatch(setGetAllOrders(res.data.allOrders));
-        console.log(" All Orders Hook Called");
       } catch (err) {
         console.log(err);
       }

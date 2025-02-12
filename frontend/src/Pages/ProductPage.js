@@ -26,7 +26,6 @@ function ProductPage() {
   useGetProductData({ id, setLoading });
 
   const { productData } = useSelector((state) => state.product);
-  console.log("Product Data:", productData);
   const { allCartItems } = useSelector((state) => state.cart);
   const [cartData, setCartData] = useState({
     productName: productData?.productName,
@@ -54,7 +53,6 @@ function ProductPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(cartData);
       if (cartData?.size.length === 0) {
         setError("Select Size");
         setTimeout(() => {
@@ -77,11 +75,6 @@ function ProductPage() {
       formData.append("quantity", 1);
       formData.append("productId", productData._id);
 
-      console.log("FormData content:");
-      for (let pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-      }
-
       const response = await axios.post(`${CART_API_END_POINT}/add`, formData, {
         headers: { "Content-Type": "application/json" },
       });
@@ -98,8 +91,6 @@ function ProductPage() {
       });
       setSelectedIndex([]);
       setFormLoading(false);
-
-      console.log("Added to Cart:", response?.data?.cart);
     } catch (error) {
       console.log(error);
       setError(error.response?.data?.message || "Something went wrong");

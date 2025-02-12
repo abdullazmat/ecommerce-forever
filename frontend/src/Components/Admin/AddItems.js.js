@@ -49,19 +49,16 @@ function AddItems() {
   // Handle Normal Change
   const handleChange = (e) => {
     setProductData({ ...productData, [e.target.name]: e.target.value });
-    console.log(productData);
   };
 
   // Handling category change
   const handleCategory = (category) => {
     setProductData({ ...productData, category });
-    console.log(productData);
   };
 
   // Handling sub-category change
   const handleSubCategory = (subCategory) => {
     setProductData({ ...productData, subCategory });
-    console.log(productData);
   };
 
   // Handling size Form Data selection/deselection
@@ -133,11 +130,6 @@ function AddItems() {
         }
       });
 
-      console.log("FormData content:");
-      for (let pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-      }
-
       const response = await axios.post(
         `${PRODUCT_API_END_POINT}/add`,
         formData,
@@ -163,8 +155,6 @@ function AddItems() {
       setSelectedIndex([]);
       setFiles([null, null, null, null]);
       setLoading(false);
-
-      console.log("Product added:", response.data);
     } catch (error) {
       console.log(error);
       setError(error.response?.data?.message || "Something went wrong");

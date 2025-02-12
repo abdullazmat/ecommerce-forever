@@ -28,8 +28,6 @@ function Header() {
     dispatch(setSearchText(input));
   }, [input]);
 
-  console.log(input);
-
   // Redux States
   const { user } = useSelector((state) => state.auth);
   const [localUser, setLocalUser] = useState(null);

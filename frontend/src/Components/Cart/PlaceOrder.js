@@ -9,6 +9,7 @@ import axios from "axios";
 import { ORDER_API_END_POINT } from "../../Utils/constant";
 import { addOrder } from "../../Redux/orderSlice";
 import useDeleteAllCart from "../../Hooks/useDeleteAllCart";
+import Toast from "../user/Toast";
 
 function PlaceOrder() {
   const navigate = useNavigate();
@@ -42,6 +43,8 @@ function PlaceOrder() {
       setPaymentStatus("Pending");
     }
   }, [paymentMethod]);
+
+  const [toastMessage, setToastMessage] = useState("");
 
   const [formData, setFormData] = useState({
     fName: "",
@@ -79,7 +82,13 @@ function PlaceOrder() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
+      if (paymentMethod === "stripe" || paymentMethod === "razorpay") {
+        setToastMessage("Payment gateway Not available");
+        return;
+      }
+
       const formObject = new FormData();
       formObject.append("fName", formData.fName);
       formObject.append("lName", formData.lName);
@@ -105,7 +114,6 @@ function PlaceOrder() {
           },
         }
       );
-      console.log(response.data.order);
       dispatch(addOrder([...orders, response.data.order]));
       await deleteAllCart();
       navigate("/orders");
@@ -116,6 +124,7 @@ function PlaceOrder() {
 
   return (
     <div className="container d-flex flex-wrap">
+      {toastMessage && <Toast message={toastMessage} />}
       <div className="p-0 p-md-2 p-lg-5 col-12 col-md-6 mt-5 mt-md-2">
         <h2>
           <span style={{ color: "#6b7280", fontFamily: "Outfit" }}>

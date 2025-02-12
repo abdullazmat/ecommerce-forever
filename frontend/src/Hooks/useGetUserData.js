@@ -13,7 +13,6 @@ const useGetUserData = (id) => {
       try {
         const res = await axios.get(`${USER_API_END_POINT}/${id}`);
         dispatch(setUser(res.data.user));
-        console.log("Get User Data Hook Called", res.data.user);
       } catch (err) {
         console.log(err);
       }

@@ -3,9 +3,11 @@ import { assets } from "../../assets/frontend_assets/assets";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import Toast from "../user/Toast";
 
 function OrderItems({ product, paymethod, createdAt, status }) {
   const [count, setCount] = useState(1);
+  const [showToast, setShowToast] = useState("");
 
   const handleChange = (e) => {
     setCount(Number(e.target.value));
@@ -13,6 +15,7 @@ function OrderItems({ product, paymethod, createdAt, status }) {
 
   return (
     <div className="border-top border-bottom d-flex flex-wrap">
+      {showToast && <Toast message={showToast} />}
       <div className="d-flex flex-wrap col-12 col-md-6">
         <div className="d-flex align-items-center col-3  ">
           <img
@@ -53,7 +56,11 @@ function OrderItems({ product, paymethod, createdAt, status }) {
           <p className=" ms-3 ms-md-2">{status}</p>
         </div>
         <div className="d-flex col-6 align-items-center justify-content-center ">
-          <p className="px-3 py-2 border " style={{ fontWeight: "400" }}>
+          <p
+            className="px-3 py-2 border "
+            onClick={() => setShowToast("Tracking Not Available")}
+            style={{ fontWeight: "400", cursor: "pointer" }}
+          >
             Track Order
           </p>
         </div>

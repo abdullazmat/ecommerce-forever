@@ -13,7 +13,6 @@ const useGetAllProducts = (dependency) => {
         const res = await axios.get(`${PRODUCT_API_END_POINT}/get`, {});
 
         dispatch(setAllProducts(res.data.products));
-        console.log("Hook Called");
       } catch (err) {
         console.log(err);
       }

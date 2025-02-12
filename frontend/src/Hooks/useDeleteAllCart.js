@@ -10,7 +10,6 @@ const useDeleteAllCart = () => {
     try {
       const res = await axios.delete(`${CART_API_END_POINT}/delete`);
       dispatch(setAllCartItems(res.data.cart));
-      console.log("Delete Cart Hook Called");
     } catch (err) {
       console.log(err);
     }

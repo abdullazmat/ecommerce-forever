@@ -38,11 +38,6 @@ function SignUp() {
     formDataObject.append("email", formData.email);
     formDataObject.append("password", formData.password);
 
-    // Log form data entries
-    for (let [key, value] of formDataObject.entries()) {
-      console.log(key, value);
-    }
-
     try {
       dispatch(setLoading(true));
       const res = await axios.post(
