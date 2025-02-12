@@ -15,6 +15,7 @@ import { setUser } from "../../Redux/authSlice";
 import { USER_API_END_POINT } from "../../Utils/constant";
 import axios from "axios";
 import { setSearchText } from "../../Redux/productSlice";
+import useGetUserData from "../../Hooks/useGetUserData";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -31,6 +32,18 @@ function Header() {
 
   // Redux States
   const { user } = useSelector((state) => state.auth);
+  const [localUser, setLocalUser] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      setLocalUser(user);
+    }
+  }, [user]);
+
+  useGetUserData(user?._id);
+  console.log("Before Hook", user);
+  useGetUserData(user?._id);
+
   const { cart } = useSelector((state) => state.cart);
 
   // Use States
@@ -165,7 +178,7 @@ function Header() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               />
-              {user ? (
+              {localUser ? (
                 <ul className="dropdown-menu dropdown-menu-start">
                   <li>
                     <Link className="dropdown-item" to="/orders">

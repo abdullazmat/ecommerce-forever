@@ -6,17 +6,11 @@ import LatestCollections from "../Components/user/LatestCollections";
 import BestSellers from "../Components/user/BestSellers";
 import Features from "../Components/user/Features";
 import SubscribeForm from "../Components/user/SubscribeForm";
+import useGetUserData from "../Hooks/useGetUserData";
 
 function Home() {
   const { user } = useSelector((state) => state.auth);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user?.role === "recruiter") {
-      navigate("/admin/companies");
-    }
-  }, [user, navigate]);
-
+  useGetUserData(user?._id);
   return (
     <div>
       <HeroSection />

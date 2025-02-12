@@ -1,7 +1,6 @@
 import express from "express";
 import {
   register,
-  updateProfile,
   login,
   logout,
   getUserById,
@@ -15,8 +14,7 @@ const router = express.Router();
 router.route("/signup").post(register);
 router.route("/login").post(login);
 router.route("/logout").get(logout);
-router.route("/profile/update").put(isAuthenticated, updateProfile);
-router.route("/user/:id").get(isAuthenticated, getUserById);
+router.route("/:id").get(getUserById);
 router.route("/forget-password").post(forgetPassword);
 router.route("/reset-password/:token").put(resetPassword);
 

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../Redux/authSlice.js";
 import NotFound from "../Components/shared/notFound.js";
 import { USER_API_END_POINT } from "../Utils/constant.js";
+import useGetUserData from "../Hooks/useGetUserData.js";
 
 function LogIn() {
   // Use States
@@ -54,6 +55,7 @@ function LogIn() {
       } else {
         setLoading(false);
         dispatch(setUser(data.user));
+        useGetUserData(data.user?._id);
         setSuccess(true);
         setTimeout(() => {
           setSuccess(false);
