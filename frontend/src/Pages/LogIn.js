@@ -6,6 +6,7 @@ import { setUser } from "../Redux/authSlice.js";
 import NotFound from "../Components/shared/notFound.js";
 import { USER_API_END_POINT } from "../Utils/constant.js";
 import useGetUserData from "../Hooks/useGetUserData.js";
+import Toast from "../Components/user/Toast.js";
 
 function LogIn() {
   // Use States
@@ -55,19 +56,20 @@ function LogIn() {
       } else {
         setLoading(false);
         dispatch(setUser(data.user));
+        console.log("Login Data", data.user?._id);
         useGetUserData(data.user?._id);
         setSuccess(true);
         setTimeout(() => {
           setSuccess(false);
           navigate("/");
-        }, 2000);
+        }, 5000);
       }
     } catch (error) {
       setLoading(false);
       setError(error.message);
       setTimeout(() => {
         setError(null);
-      }, 3000);
+      }, 5000);
     }
   };
 
@@ -90,6 +92,8 @@ function LogIn() {
   // UI
   return (
     <div className="container p-5 mt-5 mt-md-0">
+      {success && <Toast message="Logged In Successfully" />}
+      {error && <Toast message={error} type="error" />}
       <h2
         className=" container mt-5 mb-4 p-3 fw-bold d-flex justify-content-center"
         style={{ color: "#1f2937", fontFamily: "Prata, serif" }}
@@ -153,41 +157,6 @@ function LogIn() {
             {loading ? "Loading ..." : "Log In"}
           </button>
         </div>
-        {/* Error and Success Messages */}
-        {error && (
-          <div
-            className="toast-container position-fixed"
-            style={{ bottom: "50px", right: "10px" }}
-          >
-            <div
-              id="liveToast"
-              className="toast show"
-              role="alert"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
-              <div className="toast-body text-danger">{error}</div>
-            </div>
-          </div>
-        )}
-        {success && user && (
-          <div
-            className="toast-container position-fixed bottom-0 end-0 p-3"
-            style={{ bottom: "50px", right: "10px" }}
-          >
-            <div
-              id="liveToast"
-              className="toast show"
-              role="alert"
-              aria-live="assertive"
-              aria-atomic="true"
-            >
-              <div className="toast-body text-success fw-bold">
-                Logged In Successfully
-              </div>
-            </div>
-          </div>
-        )}
       </form>
     </div>
   );

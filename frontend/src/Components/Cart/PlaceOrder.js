@@ -86,6 +86,9 @@ function PlaceOrder() {
     try {
       if (paymentMethod === "stripe" || paymentMethod === "razorpay") {
         setToastMessage("Payment gateway Not available");
+        setTimeout(() => {
+          setToastMessage("");
+        }, 5000);
         return;
       }
 

@@ -53,7 +53,7 @@ export const addItem = async (req, res) => {
 // Get all Cart Items Controller
 export const getCartItems = async (req, res) => {
   try {
-    const allcartItems = await Cart.find();
+    const allcartItems = await Cart.find().sort({ createdAt: -1 });
 
     res.status(200).json({ allcartItems, success: true });
   } catch (error) {

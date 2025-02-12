@@ -157,7 +157,7 @@ function ProductPage() {
           <div className="py-2 col-12">
             <p className="fw-bold p-0 m-0">Select Size</p>
           </div>
-          <div className="col-9 col-sm-12 col-md-12 col-lg-6 py-2 d-flex flex-wrap gap-2">
+          <div className="col-12 py-2 d-flex flex-wrap gap-2">
             {productData?.size.map((size, index) => (
               <p
                 key={index}

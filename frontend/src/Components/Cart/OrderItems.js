@@ -58,7 +58,10 @@ function OrderItems({ product, paymethod, createdAt, status }) {
         <div className="d-flex col-6 align-items-center justify-content-center ">
           <p
             className="px-3 py-2 border "
-            onClick={() => setShowToast("Tracking Not Available")}
+            onClick={() => {
+              setShowToast("Tracking Not Available");
+              setTimeout(() => setShowToast(null), 5000); // Reset after 5 seconds
+            }}
             style={{ fontWeight: "400", cursor: "pointer" }}
           >
             Track Order

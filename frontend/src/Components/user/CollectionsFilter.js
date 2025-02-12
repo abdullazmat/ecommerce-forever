@@ -2,8 +2,10 @@ import React from "react";
 import LatestCollectionCards from "./LatestCollectionCards";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
+import useGetAllProducts from "../../Hooks/useGetAllProducts";
 
 function CollectionsFilter() {
+  useGetAllProducts();
   const { allProducts } = useSelector((state) => state.product);
   const { searchText } = useSelector((state) => state.product);
   const [filteredCollections, setFilteredCollections] = useState([]);
@@ -17,6 +19,7 @@ function CollectionsFilter() {
     Bottomwear: false,
     Winterwear: false,
   });
+  const [selectedSort, setSelectedSort] = useState("Sort by Relavent");
 
   const categories = ["Men", "Women", "Kids"];
   const subCategories = ["Topwear", "Bottomwear", "Winterwear"];
@@ -37,13 +40,19 @@ function CollectionsFilter() {
     }));
   };
 
+  const handleSortChange = (e) => {
+    setSelectedSort(e.target.value);
+  };
+
   useEffect(() => {
+    // Filter by search text first
     const filteredBySearch = allProducts.filter((product) =>
       searchText
         ? product.productName.toLowerCase().includes(searchText.toLowerCase())
         : true
     );
 
+    // Filter by category and subcategory
     const filteredByCategory = filteredBySearch.filter((product) => {
       const matchesCategory =
         selectedCategories[product.category] ||
@@ -54,8 +63,23 @@ function CollectionsFilter() {
       return matchesCategory && matchesSubCategory;
     });
 
-    setFilteredCollections(filteredByCategory);
-  }, [allProducts, searchText, selectedCategories, selectedSubCategories]);
+    // Sort the filtered collections based on selected sort option
+    let sortedCollections = [...filteredByCategory];
+
+    if (selectedSort === "Low To High") {
+      sortedCollections.sort((a, b) => a.price - b.price);
+    } else if (selectedSort === "High To Low") {
+      sortedCollections.sort((a, b) => b.price - a.price);
+    }
+
+    setFilteredCollections(sortedCollections);
+  }, [
+    allProducts,
+    searchText,
+    selectedCategories,
+    selectedSubCategories,
+    selectedSort,
+  ]);
 
   return (
     <div>
@@ -130,10 +154,10 @@ function CollectionsFilter() {
           </div>
 
           {/* Right Section - Collection Listings */}
-          <div className="col-12 col-md-9 py-2 py-md-4">
+          <div className=" col-12 col-md-8  col-lg-9 py-2 py-md-4">
             <div className="container">
               <div className="row align-items-center">
-                <div className="col-12 col-md-6">
+                <div className=" col-12 col-md-8 col-lg-9">
                   <h2
                     style={{
                       color: "#020817",
@@ -143,6 +167,18 @@ function CollectionsFilter() {
                   >
                     <span style={{ color: "#6b7280" }}>All</span> Collections
                   </h2>
+                </div>
+                <div className=" mt-3 mt-md-0 col-8 col-md-4 col-lg-3">
+                  <select
+                    className="form-select"
+                    style={{ fontSize: "0.8rem", border: "2px solid black" }}
+                    value={selectedSort}
+                    onChange={handleSortChange}
+                  >
+                    <option value="Sort by Relavent">Sort by Relavent</option>
+                    <option value="Low To High">Sort by: Low To High</option>
+                    <option value="High To Low">Sort by: High To Low</option>
+                  </select>
                 </div>
               </div>
             </div>

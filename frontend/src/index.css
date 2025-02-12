@@ -136,3 +136,12 @@ input[type="radio"] {
   display: flex;
   align-items: center; /* Centers single-line text */
 }
+
+/* Disable blue highlight on Sort Button */
+select.form-select:focus,
+select.form-select:active {
+  background-color: transparent !important;
+  color: inherit !important;
+  box-shadow: none !important; /* Remove Bootstrap's focus shadow */
+  border-color: black !important; /* Ensure border remains black */
+}

@@ -16,45 +16,52 @@ import { USER_API_END_POINT } from "../../Utils/constant";
 import axios from "axios";
 import { setSearchText } from "../../Redux/productSlice";
 import useGetUserData from "../../Hooks/useGetUserData";
+import Toast from "../user/Toast";
 
 function Header() {
+  // Local States
   const [menuOpen, setMenuOpen] = useState(false);
+  const [input, setInput] = useState("");
+  const [localUser, setLocalUser] = useState(null);
+  const [searchBox, setSearchBox] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Redux States
+  const { user } = useSelector((state) => state.auth);
+  const { cart } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  // Hook Called
+  useGetUserData(user?._id);
+
+  // Use Effects
+  useEffect(() => {
+    setLocalUser(user);
+  }, [user]);
+
+  useEffect(() => {
+    if (localUser) {
+      setLocalUser(localUser);
+    }
+  }, [localUser]);
+
+  // Hooks
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [input, setInput] = useState("");
-
   useEffect(() => {
     dispatch(setSearchText(input));
   }, [input]);
 
-  // Redux States
-  const { user } = useSelector((state) => state.auth);
-  const [localUser, setLocalUser] = useState(null);
-
-  useEffect(() => {
-    if (user) {
-      setLocalUser(user);
-    }
-  }, [user]);
-
-  useGetUserData(user?._id);
-  console.log("Before Hook", user);
+  // Custom Hook Call
   useGetUserData(user?._id);
 
-  const { cart } = useSelector((state) => state.cart);
-
-  // Use States
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(null);
-
-  // Function to check active route
+  // Route Checking
   const isActive = (path) => location.pathname === path;
-
   const onCollection = (path) => location;
 
-  const [searchBox, setSearchBox] = useState(false);
-
+  // Search Box Handling
   const handleClick = () => {
     setSearchBox(!searchBox);
   };
@@ -67,6 +74,7 @@ function Header() {
     }
   }, [location.pathname]);
 
+  // Logout Handler
   const logoutHandler = async () => {
     try {
       const res = await axios.get(`${USER_API_END_POINT}/logout`, {
@@ -76,9 +84,12 @@ function Header() {
         setSuccess(true);
         setTimeout(() => {
           setSuccess(false);
-        }, 3000);
+        }, 5000);
         dispatch(setUser(null));
-        navigate("/");
+        setLocalUser(null);
+        setIsOpen(false);
+
+        navigate("/login");
       }
     } catch (error) {
       console.log(error);
@@ -88,6 +99,8 @@ function Header() {
   return (
     <>
       <div className="container-fluid">
+        {success && <Toast message="Logout Successfully" />}
+        {error && <Toast message={error} />}
         {/* Header Section */}
         <header className="d-flex align-items-center justify-content-between py-3 px-4 ">
           {/* Logo */}
@@ -167,31 +180,58 @@ function Header() {
               className="me-4 fa-lg"
               style={{ cursor: "pointer" }}
             />
-            <div className="dropdown position-relative">
+            <div
+              className="dropdown position-relative"
+              onMouseEnter={() => setIsOpen(true)}
+              onMouseLeave={() => setIsOpen(false)}
+              style={{ display: "inline-block", position: "relative" }}
+            >
               <FontAwesomeIcon
                 icon={faUser}
-                onClick={user ? undefined : () => navigate("/login")}
-                className="me-4 fa-lg dropdown-toggle"
+                onClick={() => !localUser && navigate("/login")}
+                className="me-4 fa-lg"
                 style={{ cursor: "pointer" }}
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
               />
-              {localUser ? (
-                <ul className="dropdown-menu dropdown-menu-start">
+              {localUser && isOpen && (
+                <ul
+                  className="dropdown-menu"
+                  style={{
+                    display: "block",
+                    position: "absolute",
+                    right: 0, // Opens to the left
+                    top: "100%",
+                    backgroundColor: "white",
+                    boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
+                    borderRadius: "5px",
+                    padding: "5px",
+                    listStyle: "none",
+                    minWidth: "150px",
+                    zIndex: 1000,
+                  }}
+                >
                   <li>
                     <Link className="dropdown-item" to="/orders">
                       Orders
                     </Link>
                   </li>
                   <li>
-                    <Link className="dropdown-item" onClick={logoutHandler}>
+                    <button
+                      className="dropdown-item"
+                      onClick={logoutHandler}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        width: "100%",
+                        textAlign: "left",
+                        cursor: "pointer",
+                      }}
+                    >
                       Logout
-                    </Link>
+                    </button>
                   </li>
                 </ul>
-              ) : null}
+              )}
             </div>
-
             <div className="position-relative me-3  me-sm-5">
               <FontAwesomeIcon
                 icon={faCartShopping}

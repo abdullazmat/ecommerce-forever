@@ -81,10 +81,9 @@ export const addOrder = async (req, res) => {
   }
 };
 
-// Get all Orders Controller
 export const getAllOrders = async (req, res) => {
   try {
-    const allOrders = await Order.find();
+    const allOrders = await Order.find().sort({ createdAt: -1 }); // Sort by latest
 
     res.status(200).json({ allOrders, success: true });
   } catch (error) {

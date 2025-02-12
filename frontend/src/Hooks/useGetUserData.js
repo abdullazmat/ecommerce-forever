@@ -9,16 +9,18 @@ const useGetUserData = (id) => {
 
   useEffect(() => {
     const getUserData = async () => {
-      if (!id) return; // Prevent API call if id is null
       try {
-        const res = await axios.get(`${USER_API_END_POINT}/${id}`);
+        const res = await axios.get(`${USER_API_END_POINT}/${id}`, {});
+
         dispatch(setUser(res.data.user));
+        console.log(" Get User Data Hook Called");
+        console.log(res.data.user);
       } catch (err) {
         console.log(err);
       }
     };
     getUserData();
-  }, [id]); // Now runs whenever id changes
+  }, []);
 };
 
 export default useGetUserData;

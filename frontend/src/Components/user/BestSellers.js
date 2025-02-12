@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BestSellersCards from "./BestSellersCards";
 import { useSelector } from "react-redux";
+import useGetAllProducts from "../../Hooks/useGetAllProducts";
 
 function BestSellers() {
+  useGetAllProducts();
   const { allProducts } = useSelector((state) => state.product);
+  const [bestProducts, setBestProducts] = React.useState([]);
+
+  useEffect(() => {
+    allProducts.map((product) => {
+      if (product?.bestSeller) {
+        setBestProducts((prev) => [...prev, product]);
+      }
+    });
+  }, [allProducts]);
 
   return (
     <div className="container mt-5">
@@ -19,7 +30,7 @@ function BestSellers() {
         </div>
       </div>
       <div className="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-3">
-        {allProducts.slice(0, 5).map((product, index) => (
+        {bestProducts.slice(0, 5).map((product, index) => (
           <BestSellersCards key={product?._id} product={product} />
         ))}
       </div>

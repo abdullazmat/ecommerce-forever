@@ -95,7 +95,7 @@ export const addProduct = async (req, res) => {
 // Get all products Controller
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().sort({ createdAt: -1 });
 
     res.status(200).json({ products, success: true });
   } catch (error) {
