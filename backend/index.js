@@ -29,6 +29,7 @@ app.use(cookieParser());
 // Enable CORS for all routes
 const allowedOrigins = [
   "http://localhost:3002", // Local development
+  "https://ecommerce-forever-gqev.onrender.com",
 ];
 
 app.use(
