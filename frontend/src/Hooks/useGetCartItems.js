@@ -10,7 +10,9 @@ const useGetAllCartItems = (cartLength) => {
   useEffect(() => {
     const getAllCartItems = async () => {
       try {
-        const res = await axios.get(`${CART_API_END_POINT}/get`, {});
+        const res = await axios.get(`${CART_API_END_POINT}/get`, {
+          withCredentials: true,
+        });
 
         dispatch(setAllCartItems(res.data.allcartItems));
       } catch (err) {

@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 
 export const addItem = async (req, res) => {
   try {
+    const user = req?.userId;
+    console.log("User while adding cart", user);
     let { productName, size, price, images, quantity, productId } = req.body;
 
     // 🛑 Convert `size` from string to array (if necessary)
@@ -29,6 +31,7 @@ export const addItem = async (req, res) => {
     quantity = Number(quantity);
 
     const cart = await Cart.create({
+      user,
       productName,
       size,
       price,
@@ -53,7 +56,11 @@ export const addItem = async (req, res) => {
 // Get all Cart Items Controller
 export const getCartItems = async (req, res) => {
   try {
-    const allcartItems = await Cart.find().sort({ createdAt: -1 });
+    const user = req.userId;
+    const allcartItems = await Cart.find({ user })
+      .populate("productId")
+      .populate("user")
+      .sort({ createdAt: -1 });
 
     res.status(200).json({ allcartItems, success: true });
   } catch (error) {
@@ -108,7 +115,8 @@ export const updateCartItem = async (req, res) => {
 // Delete All Cart Items Controller
 export const deleteAllCartItem = async (req, res) => {
   try {
-    await Cart.deleteMany();
+    const user = req?.userId;
+    await Cart.deleteMany({ user: user });
     const cart = await Cart.find();
 
     res.status(200).json({ message: "All items deleted successfully", cart });

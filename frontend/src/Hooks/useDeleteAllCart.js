@@ -8,7 +8,9 @@ const useDeleteAllCart = () => {
 
   const deleteAllCart = async () => {
     try {
-      const res = await axios.delete(`${CART_API_END_POINT}/delete`);
+      const res = await axios.delete(`${CART_API_END_POINT}/delete`, {
+        withCredentials: true,
+      });
       dispatch(setAllCartItems(res.data.cart));
     } catch (err) {
       console.log(err);

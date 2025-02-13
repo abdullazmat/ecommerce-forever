@@ -61,6 +61,7 @@ function PlaceOrder() {
     paymethod: paymentMethod,
     payment: "Pending",
     productinfo: cart.map((item) => ({
+      product: item._id,
       name: item.productName,
       quantity: item.quantity,
       size: item.size[0],
@@ -112,6 +113,7 @@ function PlaceOrder() {
         `${ORDER_API_END_POINT}/add`,
         formObject,
         {
+          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },

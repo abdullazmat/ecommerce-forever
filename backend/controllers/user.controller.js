@@ -78,9 +78,12 @@ export const login = async (req, res) => {
     const tokenData = {
       userId: user._id,
     };
+
+    console.log(process.env.SECRET_KEY);
     const token = jwt.sign(tokenData, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
+    console.log(token);
 
     // Create the user object
     user = {
@@ -187,7 +190,7 @@ export const forgetPassword = async (req, res) => {
         <html>
           <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
             <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #333333;">Password Reset Request</h2>
+              <h2 style="color: #333333;">Password Reset Request For Ecommerce ForEver</h2>
               <p style="font-size: 16px; color: #555555;">
                 We received a request to reset your password for your Ecommerce Portal account.
                 Please click the link below to reset your password.

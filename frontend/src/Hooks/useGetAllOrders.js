@@ -10,7 +10,12 @@ const useGetAllOrders = () => {
   useEffect(() => {
     const getAllOrders = async () => {
       try {
-        const res = await axios.get(`${ORDER_API_END_POINT}/get`, {});
+        const res = await axios.get(`${ORDER_API_END_POINT}/get`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         dispatch(setGetAllOrders(res.data.allOrders));
       } catch (err) {

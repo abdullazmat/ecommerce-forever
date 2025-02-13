@@ -26,7 +26,12 @@ function CartItems({ item }) {
 
   const deleteItem = async (id) => {
     try {
-      await axios.delete(`${CART_API_END_POINT}/delete/${id}`);
+      await axios.delete(`${CART_API_END_POINT}/delete/${id}`, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const updatedItems = cart.filter((item) => item._id !== id);
       dispatch(setAllCartItems(updatedItems));
       setSuccess(true);
@@ -45,11 +50,22 @@ function CartItems({ item }) {
           `${CART_API_END_POINT}/update/${item._id}`,
           {
             quantity: count,
+          },
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
         );
 
         // Get the updated cart items from the API
-        const { data } = await axios.get(`${CART_API_END_POINT}/get`);
+        const { data } = await axios.get(`${CART_API_END_POINT}/get`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         // Dispatch the updated cart to Redux
         dispatch(setAllCartItems(data.allcartItems));

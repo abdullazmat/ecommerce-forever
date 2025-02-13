@@ -77,9 +77,11 @@ function ProductPage() {
 
       const response = await axios.post(`${CART_API_END_POINT}/add`, formData, {
         headers: { "Content-Type": "application/json" },
+        withCredentials: true,
       });
       const updatedCart = allCartItems?.push(response?.data?.cart);
       dispatch(setAllCartItems(updatedCart));
+      console.log(response?.data?.cart);
 
       setCartData({
         productName: "",

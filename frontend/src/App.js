@@ -20,6 +20,7 @@ import ListItems from "./Components/Admin/ListItems.js";
 import OrderedItems from "./Components/Admin/OrderedItems.js";
 import ProductPage from "./Pages/ProductPage.js";
 import ScrollToTop from "./Components/shared/ScrollToTop.js";
+import AdminRoute from "./Components/Admin/AdminRoute.js";
 
 function Layout() {
   const location = useLocation();
@@ -44,15 +45,20 @@ function Layout() {
           <Route path="/reset-password/:token" element={<UpdatePassword />} />
           <Route path="/collections" element={<Collections />} />
           <Route path="/product/:id" element={<ProductPage />} />
+          <Route path="/admin-panel" element={<AdminPanel />} />
+
           <Route element={<PrivateRoute />}>
             <Route path="/place-order" element={<PlaceOrder />} />
             <Route path="/orders" element={<Orders />} />
           </Route>
+
+          <Route element={<AdminRoute />}>
+            <Route path="/admin-panel/add" element={<AddItems />} />
+            <Route path="/admin-panel/list" element={<ListItems />} />
+            <Route path="/admin-panel/orders" element={<OrderedItems />} />
+          </Route>
+
           <Route path="*" element={<NotFound />} />
-          <Route path="/admin-panel" element={<AdminPanel />} />
-          <Route path="/admin-panel/add" element={<AddItems />} />
-          <Route path="/admin-panel/list" element={<ListItems />} />
-          <Route path="/admin-panel/orders" element={<OrderedItems />} />
         </Routes>
       </div>
       {!hideHeaderFooter && <Footer />}

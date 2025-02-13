@@ -10,6 +10,7 @@ function Cart() {
   const navigate = useNavigate();
 
   const { cart } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.auth);
   const [subTotal, setSubTotal] = useState(0);
   const shippingFee = 10;
   const [total, setTotal] = useState(0);
@@ -48,15 +49,18 @@ function Cart() {
           <span style={{ color: "#6b7280" }}>YOUR</span> CART
         </h2>
       </div>
-      {cart.length === 0 ? (
+      {!user ? (
+        <div className="d-flex justify-content-center align-items-center mt-3 mb-5">
+          <h3 className="text-danger">Your cart is empty</h3>
+        </div>
+      ) : cart.length === 0 ? (
         <div className="d-flex justify-content-center align-items-center mt-3 mb-5">
           <h3 className="text-danger">Your cart is empty</h3>
         </div>
       ) : (
-        cart.map((item) => {
-          return <CartItems item={item} key={item?._id} />;
-        })
+        cart.map((item) => <CartItems item={item} key={item?._id} />)
       )}
+
       <div className="row justify-content-end">
         <div className="col-12 col-md-6 col-lg-5 p-5 d-flex justify-content-center flex-column">
           <div>
@@ -66,7 +70,7 @@ function Cart() {
           </div>
           <div className="d-flex mt-4 border-bottom">
             <h6>Subtotal</h6>
-            <h6 className="ms-auto">$ {subTotal}</h6>
+            <h6 className="ms-auto">$ {user ? subTotal : 0}</h6>
           </div>
           <div className="d-flex mt-4 border-bottom">
             <h6>Shipping Fee</h6>
@@ -74,7 +78,7 @@ function Cart() {
           </div>
           <div className="d-flex mt-4 ">
             <h6 className="fw-bold">Total</h6>
-            <h6 className="ms-auto">$ {total}</h6>
+            <h6 className="ms-auto">$ {user ? total : 0}</h6>
           </div>
           <div className="mt-4 d-flex justify-content-end ">
             <button

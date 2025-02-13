@@ -14,7 +14,6 @@ const useGetUserData = (id) => {
 
         dispatch(setUser(res.data.user));
         console.log(" Get User Data Hook Called");
-        console.log(res.data.user);
       } catch (err) {
         console.log(err);
       }

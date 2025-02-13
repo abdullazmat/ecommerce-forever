@@ -2,6 +2,7 @@ import { Order } from "../models/order.model.js";
 
 export const addOrder = async (req, res) => {
   try {
+    const user = req?.userId;
     let { productinfo } = req.body;
 
     // Safely parse productinfo if it's a string
@@ -57,6 +58,7 @@ export const addOrder = async (req, res) => {
 
     // Create new order
     const order = new Order({
+      user,
       productinfo,
       fName,
       lName,
@@ -83,7 +85,10 @@ export const addOrder = async (req, res) => {
 
 export const getAllOrders = async (req, res) => {
   try {
-    const allOrders = await Order.find().sort({ createdAt: -1 }); // Sort by latest
+    const user = req.userId;
+    const allOrders = await Order.find({ user: user }).sort({
+      createdAt: -1,
+    }); // Sort by latest
 
     res.status(200).json({ allOrders, success: true });
   } catch (error) {
