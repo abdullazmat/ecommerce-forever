@@ -8,7 +8,9 @@ const isAuthenticated = async (req, res, next) => {
     const token = req?.cookies?.token; // Get the token from cookies
 
     if (!token) {
-      return res.status(401).json({ message: "Unauthorized", success: false });
+      return res
+        .status(401)
+        .json({ message: "Sign In Please", success: false });
     }
 
     // Try verifying the token
