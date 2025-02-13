@@ -27,28 +27,21 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Enable CORS for all routes
-// const allowedOrigins = [
-//   "http://localhost:3002", // Local development
-// ];
-
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error("Not allowed by CORS"));
-//       }
-//     },
-//     credentials: true,
-//     methods: ["GET", "POST", "PUT", "DELETE"],
-//   })
-// );
+const allowedOrigins = [
+  "http://localhost:3002", // Local development
+];
 
 app.use(
   cors({
-    origin: "http://localhost:3002", // Adjust to your frontend URL
-    credentials: true, // ✅ Allow sending cookies
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
@@ -58,15 +51,13 @@ app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/order", orderRoutes);
-// app.use("/api/v1/payment", paymentRoutes);
-// app.use("/api/v1/reviews", reviewRoutes);
 
 //  Serve static assets if in production
-// const __dirname = path.resolve();
-// app.use(express.static(path.join(__dirname, "/frontend/build")));
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
-// });
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "/frontend/build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend", "build", "index.html"));
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

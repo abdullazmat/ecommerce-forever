@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { PRODUCT_API_END_POINT } from "../../Utils/constant";
 import Toast from "../user/Toast";
 import useGetAllProducts from "../../Hooks/useGetAllProducts";
+import { useSelector } from "react-redux";
 
 function AddItems() {
   const location = useLocation();
@@ -21,6 +22,8 @@ function AddItems() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { admin } = useSelector((state) => state.admin);
+  console.log(admin);
 
   useGetAllProducts();
 
@@ -92,6 +95,17 @@ function AddItems() {
     e.preventDefault();
     try {
       setLoading(true);
+
+      // if (admin?.email === "admin@gmail.com") {
+      //   setError("You are not authorized to add products");
+      //   setTimeout(() => {
+      //     setError(null);
+      //   }, 3000);
+      //   setTimeout(() => {
+      //     setLoading(false);
+      //   }, 2000);
+      //   return;
+      // }
 
       if (productData.size.length === 0) {
         setError("Select Size");

@@ -7,10 +7,12 @@ import BestSellers from "../Components/user/BestSellers";
 import Features from "../Components/user/Features";
 import SubscribeForm from "../Components/user/SubscribeForm";
 import useGetUserData from "../Hooks/useGetUserData";
+import useGetAllCartItems from "../Hooks/useGetCartItems";
 
 function Home() {
   const { user } = useSelector((state) => state.auth);
   useGetUserData(user?._id);
+  useGetAllCartItems();
   return (
     <div>
       <HeroSection />

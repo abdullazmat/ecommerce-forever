@@ -19,8 +19,8 @@ function AdminPanel() {
   const [success, setSuccess] = React.useState(false);
 
   const [formData, setFormData] = useState({
-    email: process.env.REACT_APP_ADMIN_EMAIL || "",
-    password: process.env.REACT_APP_ADMIN_PASSWORD || "",
+    email: "admin@gmail.com" || "",
+    password: "admin" || "",
   });
 
   const handleChange = (e) => {

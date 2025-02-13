@@ -21,10 +21,20 @@ function ListItems() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [loadingProducts, setLoadingProducts] = useState({});
+  const { admin } = useSelector((state) => state.admin);
 
   useGetAllProducts();
 
   const deleteProduct = async (id) => {
+    if (admin?.email === "admin@gmail.com") {
+      setError("Not Authorized To Delete Products");
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+
+      return;
+    }
+
     setLoadingProducts((prev) => ({ ...prev, [id]: true })); // Set loading for the product being deleted
     try {
       await axios.delete(`${PRODUCT_API_END_POINT}/delete/${id}`);
