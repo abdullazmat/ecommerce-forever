@@ -83,10 +83,24 @@ export const addOrder = async (req, res) => {
   }
 };
 
-export const getAllOrders = async (req, res) => {
+// Get User Orders Controller
+export const getUserOrders = async (req, res) => {
   try {
     const user = req.userId;
-    const allOrders = await Order.find({ user: user }).sort({
+    const userOrders = await Order.find({ user: user }).sort({
+      createdAt: -1,
+    }); // Sort by latest
+
+    res.status(200).json({ userOrders, success: true });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get User Orders Controller
+export const getAllOrders = async (req, res) => {
+  try {
+    const allOrders = await Order.find({}).sort({
       createdAt: -1,
     }); // Sort by latest
 

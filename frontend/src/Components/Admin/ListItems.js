@@ -37,7 +37,12 @@ function ListItems() {
 
     setLoadingProducts((prev) => ({ ...prev, [id]: true })); // Set loading for the product being deleted
     try {
-      await axios.delete(`${PRODUCT_API_END_POINT}/delete/${id}`);
+      await axios.delete(`${PRODUCT_API_END_POINT}/delete/${id}`, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const updatedProducts = allProducts.filter(
         (product) => product._id !== id
       );
@@ -73,16 +78,17 @@ function ListItems() {
                     : "#FFFFFF",
               }}
             >
-              <FontAwesomeIcon
-                icon={faCirclePlus}
-                className="fa-lg ms-0 ms-md-3"
-              />
               <Link
                 to={"/admin-panel/add"}
-                className="nav-link text-black d-none d-md-inline"
-                aria-current="page"
+                className="d-flex align-items-center text-black text-decoration-none"
               >
-                Add Items
+                <FontAwesomeIcon
+                  icon={faCirclePlus}
+                  className="fa-lg ms-0 ms-md-3"
+                />
+                <span className="nav-link d-none d-md-inline text-black">
+                  Add Items
+                </span>
               </Link>
             </li>
             <li
@@ -94,13 +100,14 @@ function ListItems() {
                     : "#FFFFFF",
               }}
             >
-              <FontAwesomeIcon icon={faList} className="fa-lg ms-0 ms-md-3" />
               <Link
                 to={"/admin-panel/list"}
-                className="nav-link text-black d-none d-md-inline"
-                aria-current="page"
+                className="d-flex align-items-center text-black text-decoration-none"
               >
-                List Items
+                <FontAwesomeIcon icon={faList} className="fa-lg ms-0 ms-md-3" />
+                <span className="nav-link d-none d-md-inline text-black">
+                  List Items
+                </span>
               </Link>
             </li>
             <li
@@ -112,16 +119,17 @@ function ListItems() {
                     : "#FFFFFF",
               }}
             >
-              <FontAwesomeIcon
-                icon={faBagShopping}
-                className="fa-lg ms-0 ms-md-3"
-              />
               <Link
                 to={"/admin-panel/orders"}
-                className="nav-link text-black d-none d-md-inline"
-                aria-current="page"
+                className="d-flex align-items-center text-black text-decoration-none"
               >
-                Order List
+                <FontAwesomeIcon
+                  icon={faBagShopping}
+                  className="fa-lg ms-0 ms-md-3"
+                />
+                <span className="nav-link d-none d-md-inline text-black">
+                  Order List
+                </span>
               </Link>
             </li>
           </ul>

@@ -13,6 +13,7 @@ import useGetAllOrders from "../../Hooks/useGetAllOrders";
 import { setUpdatedOrder } from "../../Redux/orderSlice";
 import axios from "axios";
 import { ORDER_API_END_POINT } from "../../Utils/constant";
+import useGetUserOrders from "../../Hooks/useGetUserOrders";
 
 function OrderedItems() {
   const location = useLocation();
@@ -29,9 +30,18 @@ function OrderedItems() {
 
     try {
       // Update Backend
-      await axios.put(`${ORDER_API_END_POINT}/update/${orderId}`, {
-        status: newStatus,
-      });
+      await axios.put(
+        `${ORDER_API_END_POINT}/update/${orderId}`,
+        {
+          status: newStatus,
+        },
+        {
+          withCredentials: true,
+          Headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
     } catch (error) {
       console.error("Failed to update Order Status", error);
     }
@@ -56,15 +66,17 @@ function OrderedItems() {
                     : "#FFFFFF",
               }}
             >
-              <FontAwesomeIcon
-                icon={faCirclePlus}
-                className="fa-lg ms-0 ms-md-3"
-              />
               <Link
-                to="/admin-panel/add"
-                className="nav-link text-black d-none d-md-inline"
+                to={"/admin-panel/add"}
+                className="d-flex align-items-center text-black text-decoration-none"
               >
-                Add Items
+                <FontAwesomeIcon
+                  icon={faCirclePlus}
+                  className="fa-lg ms-0 ms-md-3"
+                />
+                <span className="nav-link d-none d-md-inline text-black">
+                  Add Items
+                </span>
               </Link>
             </li>
             <li
@@ -76,12 +88,14 @@ function OrderedItems() {
                     : "#FFFFFF",
               }}
             >
-              <FontAwesomeIcon icon={faList} className="fa-lg ms-0 ms-md-3" />
               <Link
-                to="/admin-panel/list"
-                className="nav-link text-black d-none d-md-inline"
+                to={"/admin-panel/list"}
+                className="d-flex align-items-center text-black text-decoration-none"
               >
-                List Items
+                <FontAwesomeIcon icon={faList} className="fa-lg ms-0 ms-md-3" />
+                <span className="nav-link d-none d-md-inline text-black">
+                  List Items
+                </span>
               </Link>
             </li>
             <li
@@ -93,15 +107,17 @@ function OrderedItems() {
                     : "#FFFFFF",
               }}
             >
-              <FontAwesomeIcon
-                icon={faBagShopping}
-                className="fa-lg ms-0 ms-md-3"
-              />
               <Link
-                to="/admin-panel/orders"
-                className="nav-link text-black d-none d-md-inline"
+                to={"/admin-panel/orders"}
+                className="d-flex align-items-center text-black text-decoration-none"
               >
-                Order List
+                <FontAwesomeIcon
+                  icon={faBagShopping}
+                  className="fa-lg ms-0 ms-md-3"
+                />
+                <span className="nav-link d-none d-md-inline text-black">
+                  Order List
+                </span>
               </Link>
             </li>
           </ul>

@@ -9,6 +9,7 @@ import adminRoutes from "./routes/admin.route.js";
 import productRoutes from "./routes/product.route.js";
 import cartRoutes from "./routes/cart.route.js";
 import orderRoutes from "./routes/order.route.js";
+import subRoutes from "./routes/sub.route.js";
 
 import path from "path";
 
@@ -52,6 +53,7 @@ app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/cart", cartRoutes);
 app.use("/api/v1/order", orderRoutes);
+app.use("/api/v1/sub", subRoutes);
 
 //  Serve static assets if in production
 const __dirname = path.resolve();

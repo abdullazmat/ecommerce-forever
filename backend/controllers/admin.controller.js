@@ -75,7 +75,7 @@ export const login = async (req, res) => {
     const tokenData = {
       adminId: admin._id,
     };
-    const token = jwt.sign(tokenData, process.env.SECRET_KEY, {
+    const adminToken = jwt.sign(tokenData, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
 
@@ -88,7 +88,7 @@ export const login = async (req, res) => {
     // Send the token in the HTTP-only cookie
     return res
       .status(200)
-      .cookie("token", token, {
+      .cookie("adminToken", adminToken, {
         maxAge: 86400000,
         httpOnly: true,
         sameSite: "Strict",
@@ -112,7 +112,7 @@ export const logout = async (req, res) => {
       res
         .status(200)
         // Clear the cookie
-        .cookie("token", "", {
+        .cookie("adminToken", "", {
           maxAge: 0,
         })
         .json({ message: "Logged out successfully", success: true })

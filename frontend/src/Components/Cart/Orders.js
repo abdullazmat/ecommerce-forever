@@ -1,11 +1,13 @@
 import React from "react";
 import OrderItems from "./OrderItems";
 import { useSelector } from "react-redux";
-import useGetAllOrders from "../../Hooks/useGetAllOrders";
+import useGetUserOrders from "../../Hooks/useGetUserOrders";
+import useGetAllCartItems from "../../Hooks/useGetCartItems";
 
 function Orders() {
-  // useGetAllOrders();
-  const { allOrders } = useSelector((state) => state.order);
+  useGetUserOrders();
+  useGetAllCartItems();
+  const { userOrders } = useSelector((state) => state.order);
 
   return (
     <div className="container">
@@ -14,8 +16,8 @@ function Orders() {
           <span style={{ color: "#6b7280" }}>MY</span> ORDERS
         </h2>
       </div>
-      {allOrders && allOrders.length > 0 ? (
-        allOrders.flatMap((order) =>
+      {userOrders && userOrders.length > 0 ? (
+        userOrders.flatMap((order) =>
           order.productinfo.map((product) => (
             <OrderItems
               key={product._id}

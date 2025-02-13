@@ -12,7 +12,12 @@ function AdminHeader() {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.get(`${ADMIN_API_END_POINT}/logout`);
+      const { data } = await axios.get(`${ADMIN_API_END_POINT}/logout`, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (data.success) {
         dispatch(setAdmin(null));
         navigate("/admin-panel");

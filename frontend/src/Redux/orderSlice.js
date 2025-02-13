@@ -5,6 +5,7 @@ const orderSlice = createSlice({
   initialState: {
     orders: [],
     allOrders: [],
+    userOrders: [],
   },
   reducers: {
     addOrder: (state, action) => {
@@ -12,6 +13,9 @@ const orderSlice = createSlice({
     },
     setGetAllOrders: (state, action) => {
       state.allOrders = action.payload;
+    },
+    setGetUserOrders: (state, action) => {
+      state.userOrders = action.payload;
     },
     setUpdatedOrder: (state, action) => {
       state.allOrders = state.allOrders.map((order) =>
@@ -23,6 +27,6 @@ const orderSlice = createSlice({
   },
 });
 
-export const { addOrder, setGetAllOrders, setUpdatedOrder } =
+export const { addOrder, setGetAllOrders, setUpdatedOrder, setGetUserOrders } =
   orderSlice.actions;
 export default orderSlice.reducer;

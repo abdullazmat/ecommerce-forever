@@ -23,7 +23,6 @@ function AddItems() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const { admin } = useSelector((state) => state.admin);
-  console.log(admin);
 
   useGetAllProducts();
 
@@ -96,16 +95,16 @@ function AddItems() {
     try {
       setLoading(true);
 
-      // if (admin?.email === "admin@gmail.com") {
-      //   setError("You are not authorized to add products");
-      //   setTimeout(() => {
-      //     setError(null);
-      //   }, 3000);
-      //   setTimeout(() => {
-      //     setLoading(false);
-      //   }, 2000);
-      //   return;
-      // }
+      if (admin?.email === "admin@gmail.com") {
+        setError("You are not authorized to add products");
+        setTimeout(() => {
+          setError(null);
+        }, 3000);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
+        return;
+      }
 
       if (productData.size.length === 0) {
         setError("Select Size");
@@ -149,6 +148,7 @@ function AddItems() {
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
         }
       );
       disapatch(setAddProducs(response.data));
@@ -196,16 +196,17 @@ function AddItems() {
                     : "#FFFFFF",
               }}
             >
-              <FontAwesomeIcon
-                icon={faCirclePlus}
-                className="fa-lg ms-0 ms-md-3"
-              />
               <Link
                 to={"/admin-panel/add"}
-                className="nav-link text-black d-none d-md-inline"
-                aria-current="page"
+                className="d-flex align-items-center text-black text-decoration-none"
               >
-                Add Items
+                <FontAwesomeIcon
+                  icon={faCirclePlus}
+                  className="fa-lg ms-0 ms-md-3"
+                />
+                <span className="nav-link d-none d-md-inline text-black">
+                  Add Items
+                </span>
               </Link>
             </li>
             <li
@@ -217,13 +218,14 @@ function AddItems() {
                     : "#FFFFFF",
               }}
             >
-              <FontAwesomeIcon icon={faList} className="fa-lg ms-0 ms-md-3" />
               <Link
                 to={"/admin-panel/list"}
-                className="nav-link text-black d-none d-md-inline"
-                aria-current="page"
+                className="d-flex align-items-center text-black text-decoration-none"
               >
-                List Items
+                <FontAwesomeIcon icon={faList} className="fa-lg ms-0 ms-md-3" />
+                <span className="nav-link d-none d-md-inline text-black">
+                  List Items
+                </span>
               </Link>
             </li>
             <li
@@ -235,16 +237,17 @@ function AddItems() {
                     : "#FFFFFF",
               }}
             >
-              <FontAwesomeIcon
-                icon={faBagShopping}
-                className="fa-lg ms-0 ms-md-3"
-              />
               <Link
                 to={"/admin-panel/orders"}
-                className="nav-link text-black d-none d-md-inline"
-                aria-current="page"
+                className="d-flex align-items-center text-black text-decoration-none"
               >
-                Order List
+                <FontAwesomeIcon
+                  icon={faBagShopping}
+                  className="fa-lg ms-0 ms-md-3"
+                />
+                <span className="nav-link d-none d-md-inline text-black">
+                  Order List
+                </span>
               </Link>
             </li>
           </ul>
